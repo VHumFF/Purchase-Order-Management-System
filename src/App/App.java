@@ -4,17 +4,47 @@
  */
 package App;
 
-/**
- *
- * @author verno
- */
+
 public class App {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        App appInstance = new App();
+        appInstance.App();
     }
+    
+    public void App(){
+        changeMenu(AppMenu.ADMIN_PANEL.getMenuClass());
+       
+}
+    
+    enum AppMenu{
+        ADMIN_PANEL(AdminPanel.class),
+        SALES_MANAGEMENT_MENU(SalesManagementMenu.class),
+        PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class);
+        
+        private final Class<?> menuClass;
+        
+        AppMenu(Class<?> menuClass){
+            this.menuClass = menuClass;
+        }
+        
+        public Class<?> getMenuClass(){
+            return this.menuClass;
+        }
+    }
+    
+    
+    public void changeMenu(Class<?> menuClass){
+        try {
+        Object menuObject = menuClass.getDeclaredConstructor().newInstance();
+        menuClass.getDeclaredMethod("OpenMenu").invoke(menuObject);
+        } 
+        catch (Exception e) {
+        System.out.println("Error: Failed to change menu.");
+        e.printStackTrace();
+    }
+    }
+    
+    
     
 }
