@@ -14,6 +14,7 @@ public class App {
     
     public void App(){
         changeMenu(AppMenu.ADMIN_PANEL.getMenuClass());
+        System.out.println("welcome back");
        
 }
     
@@ -33,8 +34,9 @@ public class App {
         }
     }
     
-    
+
     public void changeMenu(Class<?> menuClass){
+        System.out.println(System.lineSeparator().repeat(50));//simulate clear screen
         try {
         Object menuObject = menuClass.getDeclaredConstructor().newInstance();
         menuClass.getDeclaredMethod("OpenMenu").invoke(menuObject);
@@ -42,9 +44,7 @@ public class App {
         catch (Exception e) {
         System.out.println("Error: Failed to change menu.");
         e.printStackTrace();
+        }
     }
-    }
-    
-    
-    
+
 }
