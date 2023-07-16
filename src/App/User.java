@@ -9,11 +9,25 @@ package App;
  * @author verno
  */
 public class User {
-    private String userID;
     private String username;
     private String password;
     private String role;
     
+    public User(String username,String password, String role){
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
     
-   
+    public String getUname(){
+        return username;
+    }
+    
+    public String getUpass(){
+        return password;
+    }
+    
+    public String getRole(){
+        return role;
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @author verno
  */
 public class PurchaseManagementMenu {
-    public void OpenMenu(){
+    public void OpenPage(){
         Scanner Sc = new Scanner(System.in);
         Outer:
         while(true){
@@ -50,6 +50,5 @@ public class PurchaseManagementMenu {
             }
             
         }
-        Sc.close();
     }
 }

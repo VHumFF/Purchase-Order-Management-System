@@ -13,36 +13,37 @@ public class App {
     }
     
     public void App(){
-        changeMenu(AppMenu.ADMIN_PANEL.getMenuClass());
+        changePage(AppPage.ADMIN_PANEL.getPageClass());
         System.out.println("welcome back");
        
 }
     
-    enum AppMenu{
+    enum AppPage{
         ADMIN_PANEL(AdminPanel.class),
         SALES_MANAGEMENT_MENU(SalesManagementMenu.class),
-        PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class);
+        PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class),
+        USER_REGISTRATION_PAGE(UserRegistration.class);
         
-        private final Class<?> menuClass;
+        private final Class<?> pageClass;
         
-        AppMenu(Class<?> menuClass){
-            this.menuClass = menuClass;
+        AppPage(Class<?> pageClass){
+            this.pageClass = pageClass;
         }
         
-        public Class<?> getMenuClass(){
-            return this.menuClass;
+        public Class<?> getPageClass(){
+            return this.pageClass;
         }
     }
     
 
-    public void changeMenu(Class<?> menuClass){
+    public void changePage(Class<?> pageClass){
         System.out.println(System.lineSeparator().repeat(50));//simulate clear screen
         try {
-        Object menuObject = menuClass.getDeclaredConstructor().newInstance();
-        menuClass.getDeclaredMethod("OpenMenu").invoke(menuObject);
+        Object pageObject = pageClass.getDeclaredConstructor().newInstance();
+        pageClass.getDeclaredMethod("OpenPage").invoke(pageObject);
         } 
         catch (Exception e) {
-        System.out.println("Error: Failed to change menu.");
+        System.out.println("Error: Failed to change page.");
         e.printStackTrace();
         }
     }

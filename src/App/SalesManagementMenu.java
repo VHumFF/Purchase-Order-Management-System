@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @author verno
  */
 public class SalesManagementMenu {
-    public void OpenMenu(){
+    public void OpenPage(){
         Scanner Sc = new Scanner(System.in);
         
         Outer:
@@ -54,6 +54,6 @@ public class SalesManagementMenu {
                     break Outer;
             }
         }
-        Sc.close();
+
     }
 }
