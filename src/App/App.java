@@ -13,12 +13,11 @@ public class App {
     }
     
     public void App(){
-        changePage(AppPage.ADMIN_PANEL.getPageClass());
-        System.out.println("welcome back");
-       
+        changePage(AppPage.LOGIN_PAGE.getPageClass());
 }
     
     enum AppPage{
+        LOGIN_PAGE(Login.class),
         ADMIN_PANEL(AdminPanel.class),
         SALES_MANAGEMENT_MENU(SalesManagementMenu.class),
         PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class),

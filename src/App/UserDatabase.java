@@ -70,4 +70,37 @@ public class UserDatabase {
     }
     
     
+    public String validateUserCredential(User userCredential){
+        String username = userCredential.getUname();
+        String password = userCredential.getUpass();
+
+        File file = new File("Database/UserAccount.txt");
+        try
+        {
+            
+            String[] uInfo;
+            String line;
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            while((line = reader.readLine()) != null){
+                uInfo = line.strip().split(";");
+                if(uInfo[0].equals(username)){
+                    if(uInfo[1].equals(password)){
+                        
+                        return uInfo[2];
+                    }
+                    else{
+                        return null;
+                    }
+                }
+                else{
+                    continue;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
 }
