@@ -39,5 +39,13 @@ public class Supplier {
     public String getSuppID(){
         return supplierID;
     }
+    
+    public void setSuppName(String suppName){
+        this.supplierName = suppName;
+    }
+    
+    public void setSuppContact(String suppContact){
+        this.supplierContact = suppContact;
+    }
 }
 

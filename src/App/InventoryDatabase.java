@@ -175,7 +175,7 @@ public class InventoryDatabase {
         return newIndex;
     }
     
-    public ArrayList<String[]> getSupplierList(){
+    public ArrayList<String[]> getSupplierItemList(){
         File suppFile = new File("Database/Supplier.txt");
         ArrayList<String[]> suppList = getAllData(suppFile);
         if(suppList == null){
@@ -251,6 +251,9 @@ public class InventoryDatabase {
         }
         
     }
+    
+    
+
 }
 
 

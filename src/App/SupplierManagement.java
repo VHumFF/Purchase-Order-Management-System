@@ -34,7 +34,7 @@ public class SupplierManagement {
                     deleteSupplier();
                     break;
                 case "3":
-                    System.out.println("You selected Daily Item-wise Sales Entry");
+                    editSupplier();
                     break;
                 case "4":
                     displaySupplier();
@@ -49,7 +49,7 @@ public class SupplierManagement {
         }
     }
     
-    public void addSupplier(){
+    private void addSupplier(){
         String supplierName = null;
         String supplierContact = null;
         Scanner Sc = new Scanner(System.in);
@@ -99,7 +99,7 @@ public class SupplierManagement {
     
     
     
-    public boolean validateSupplierName(String supplierName){
+    private boolean validateSupplierName(String supplierName){
         if(!supplierName.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9 ]{3,30}$")){
             Scanner sc = new Scanner(System.in);
             if(supplierName.length() < 3 || supplierName.length() > 50){
@@ -117,7 +117,7 @@ public class SupplierManagement {
     }
     
     
-    public boolean validateSupplierContact(String supplierContact){
+    private boolean validateSupplierContact(String supplierContact){
         if(!supplierContact.matches("[0-9]{9,11}$")){
             Scanner sc = new Scanner(System.in);
             if(supplierContact.length() < 9 || supplierContact.length() > 11){
@@ -135,8 +135,7 @@ public class SupplierManagement {
     }
     
     
-    public void deleteSupplier(){
-        
+    private void deleteSupplier(){
         Scanner Sc = new Scanner(System.in);
         Outer:
         while(true){
@@ -215,21 +214,89 @@ public class SupplierManagement {
                     }
                 }
             }
+        }
+    }
+    
+    
+    private void editSupplier(){
+        Scanner Sc = new Scanner(System.in);
+        Supplier supp = new Supplier(null, null, null);
+        Outer:
+        while(true){
+            ArrayList<String[]> supplierList = displaySupplier();
+
+            System.out.print("\nEnter the supplier ID to edit or [BACK] to return:");
+            String supplierToEdit = Sc.nextLine().toUpperCase();
+            if(supplierToEdit.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
             
+            boolean idFound = false;
             
+            for(String[] supplier : supplierList){
+                String supplierID = supplier[0];
+                if(supplierID.equals(supplierToEdit)){
+                    supp = new Supplier(supplier[0], supplier[1], supplier[2]);
+                    idFound = true;
+                    break;
+                }
+            }
             
+            if(!idFound){
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Please enter a valid supplierID");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                continue;
+            }
             
+            getSupplierAttributeAndEdit(supp);
             
         }
-        
-
-        
+    }
+    
+    private boolean getSupplierAttributeAndEdit(Supplier supp){
+        Scanner Sc = new Scanner(System.in);
+        while(true){
+                System.out.println("==============================");
+                System.out.println("Supplier ID     : " + supp.getSuppID());
+                System.out.println("Supplier Name   : " + supp.getSuppName());
+                System.out.println("Supplier Contact: " + supp.getSuppContact());
+                System.out.println("==============================\n");
+                System.out.println("Choose an attribute to edit:");
+                System.out.print("1. Supplier Name\n2. Supplier Contact Information\n0. Back\nPlease enter your choice:");
+                String choice = Sc.nextLine();
+                if(choice.equals("1")){
+                    System.out.print("Enter supplier new name:");
+                    String suppName = Sc.nextLine();
+                    supp.setSuppName(suppName);
+                    
+                    return true;
+                }
+                else if(choice.equals("2")){
+                    System.out.print("Enter supplier new contact:");
+                    String suppContact = Sc.nextLine();
+                    supp.setSuppContact(suppContact);
+                    return true;
+                }
+                else if(choice.equals("0")){
+                    
+                    return false;
+                }
+                else{
+                    return false;
+                }
+                
+                
+            }
     }
     
     
     public ArrayList<String[]> displaySupplier(){
         InventoryDatabase invDB = new InventoryDatabase();
-        ArrayList<String[]> supplierList = invDB.getSupplierList();
+        ArrayList<String[]> supplierList = invDB.getSupplierItemList();
         if(supplierList == null){
             System.out.println("No supplier found.");
             return null;
@@ -251,9 +318,10 @@ public class SupplierManagement {
             }
             System.out.println();
         }
-        System.out.println("=============================================================================");
+        System.out.println("=============================================================================\n");
         
         return supplierList;
     }
+    
     
 }
