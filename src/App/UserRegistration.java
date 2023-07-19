@@ -16,7 +16,7 @@ public class UserRegistration {
             System.out.println("======== User Registration ========");
             System.out.print(String.format("Enter Username:"));
             username = Sc.nextLine();
-            boolean usernValid = usernValidation(username);
+            boolean usernValid = usernValidation(username);//validate username format
             if(!usernValid){
                 continue;
             }
@@ -24,7 +24,7 @@ public class UserRegistration {
             System.out.print(String.format("Enter Password:"));
             password = Sc.nextLine();
             
-            boolean passwValid = passwValidation(password);
+            boolean passwValid = passwValidation(password);//validate password format
             if(!passwValid){
                 continue;
             }
@@ -37,6 +37,7 @@ public class UserRegistration {
         
         Outer:
         while(!selected){
+            //select a role for the new user
             System.out.println(System.lineSeparator().repeat(50));
             System.out.println("======== Roles ========");
             System.out.println(String.format("%-2s %-1s", "1.", "Admin"));
@@ -71,16 +72,14 @@ public class UserRegistration {
         
         if(selected){
             User newUser = new User(username, password, role);
-            UserDatabase uDB = new UserDatabase();
-            uDB.registerUser(newUser);
-            
+            UserDatabase uDB = new UserDatabase(newUser);
+            uDB.registerUser();
         }
         System.out.println(System.lineSeparator().repeat(50));
         
     }
     
-    public boolean usernValidation(String username){
-        
+    private boolean usernValidation(String username){
         if(!username.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9]{5,15}$")){
             Scanner sc = new Scanner(System.in);
             if(username.length() < 5 || username.length() > 15){
@@ -101,7 +100,7 @@ public class UserRegistration {
         return true;
     }
     
-    public boolean passwValidation(String password){
+    private boolean passwValidation(String password){
         
         if(!password.matches("^(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{9,20}$")){
             Scanner sc = new Scanner(System.in);

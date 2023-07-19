@@ -15,15 +15,18 @@ public class Login {
         App appInstance = new App();
         Scanner Sc = new Scanner(System.in);
         
+        
         while(true){
             System.out.println("======== Login Page ========");
             System.out.print("Enter Username:");
             String username = Sc.nextLine();
             System.out.print("Enter Password:");
             String password = Sc.nextLine();
+            
             User LCredential = new User(username, password);
-            UserDatabase uDB = new UserDatabase();
-            String role = uDB.validateUserCredential(LCredential);
+            UserDatabase uDB = new UserDatabase(LCredential);
+            String role = uDB.validateUserCredential();
+            
             if(role != null){
                 switch(role){
                     case "Admin":

@@ -1,0 +1,5 @@
+IT001;food;12.2;80;Fresh Food;SP001
+IT002;food;12.2;80;Fresh Food;SP001
+IT003;food;12.2;80;Fresh Food;SP001
+IT004;food;12.2;80;Fresh Food;SP002
+IT005;food;12.2;80;Fresh Food;SP002

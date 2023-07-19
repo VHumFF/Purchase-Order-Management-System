@@ -12,13 +12,14 @@ import java.util.Scanner;
  */
 public class SalesManagementMenu {
     public void OpenPage(){
+        App appInstance = new App();
         Scanner Sc = new Scanner(System.in);
         
         Outer:
         while(true){
             System.out.println("======== Sales Management Menu ========");
-            System.out.println(String.format("%-2s %-1s", "1.", "Item Entry"));
-            System.out.println(String.format("%-2s %-1s", "2.", "Supplier Entry"));
+            System.out.println(String.format("%-2s %-1s", "1.", "Item Management"));
+            System.out.println(String.format("%-2s %-1s", "2.", "Supplier Management"));
             System.out.println(String.format("%-2s %-1s", "3.", "Daily Item-wise Sales Entry"));
             System.out.println(String.format("%-2s %-1s", "4.", "Create Purchse Requisition"));
             System.out.println(String.format("%-2s %-1s", "5.", "Display Requisition"));
@@ -33,6 +34,7 @@ public class SalesManagementMenu {
                     break;
                 case "2":
                     System.out.println("You selected Supplier Entry");
+                    appInstance.changePage(App.AppPage.SUPPLIER_MANAGEMENT.getPageClass());
                     break;
                 case "3":
                     System.out.println("You selected Daily Item-wise Sales Entry");

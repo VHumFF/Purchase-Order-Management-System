@@ -12,11 +12,17 @@ import java.util.Scanner;
 
 
 public class UserDatabase {
+    private User userData;
     
-    public void registerUser(User newUser){
-        String username = newUser.getUname();
-        String password = newUser.getUpass();
-        String role = newUser.getRole();
+    
+    public UserDatabase(User user){
+        this.userData = user;
+    }
+
+    public void registerUser(){
+        String username = userData.getUname();
+        String password = userData.getUpass();
+        String role = userData.getRole();
         Scanner Sc = new Scanner(System.in);
           
         Boolean userExist = checkUserExist(username);
@@ -33,11 +39,12 @@ public class UserDatabase {
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-            String textData = username + ";" + password + ";" + role + "\n";
+            String userAcc = username + ";" + password + ";" + role + "\n";
 
 
-            writer.write(textData);
+            writer.write(userAcc);
             writer.close();
+            
             System.out.println(System.lineSeparator().repeat(50));
             System.out.println("User registration successful.");
             System.out.println("Press [Enter] to continue...");
@@ -56,6 +63,7 @@ public class UserDatabase {
             String[] uInfo;
             String line;
             BufferedReader reader = new BufferedReader(new FileReader(file));
+            //check whether username exist
             while((line = reader.readLine()) != null){
                 uInfo = line.strip().split(";");
                 if(uInfo[0].equals(username)){
@@ -70,9 +78,9 @@ public class UserDatabase {
     }
     
     
-    public String validateUserCredential(User userCredential){
-        String username = userCredential.getUname();
-        String password = userCredential.getUpass();
+    public String validateUserCredential(){
+        String username = userData.getUname();
+        String password = userData.getUpass();
 
         File file = new File("Database/UserAccount.txt");
         try
@@ -81,11 +89,13 @@ public class UserDatabase {
             String[] uInfo;
             String line;
             BufferedReader reader = new BufferedReader(new FileReader(file));
+            //match username and password in database
             while((line = reader.readLine()) != null){
                 uInfo = line.strip().split(";");
                 if(uInfo[0].equals(username)){
                     if(uInfo[1].equals(password)){
                         
+                        //return user role
                         return uInfo[2];
                     }
                     else{

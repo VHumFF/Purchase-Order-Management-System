@@ -21,7 +21,9 @@ public class App {
         ADMIN_PANEL(AdminPanel.class),
         SALES_MANAGEMENT_MENU(SalesManagementMenu.class),
         PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class),
-        USER_REGISTRATION_PAGE(UserRegistration.class);
+        USER_REGISTRATION_PAGE(UserRegistration.class),
+        SUPPLIER_MANAGEMENT(SupplierManagement.class);
+        
         
         private final Class<?> pageClass;
         
