@@ -142,8 +142,13 @@ public class SupplierManagement {
         while(true){
             ArrayList<String[]> supplierList = displaySupplier();
 
-            System.out.print("\nEnter the supplier ID to delete:");
-            String supplierToDelete = Sc.nextLine();
+            System.out.print("\nEnter the supplier ID to delete or [BACK] to return:");
+            String supplierToDelete = Sc.nextLine().toUpperCase();
+            if(supplierToDelete.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
+            
             boolean idFound = false;
             ArrayList<String> itemSupplied = new ArrayList<>();
             for(String[] supplier : supplierList){
@@ -174,12 +179,13 @@ public class SupplierManagement {
                     System.out.println("This action cannot be undone. Are you sure you want to proceed?");
                     System.out.print("1. Delete\n2. Cancel\nPlease enter your choice:");
                     String choice = Sc.nextLine();
-                    if(choice == "1"){
+                    if(choice.equals("1")){
                         Supplier supp = new Supplier(supplierToDelete);
                         InventoryDatabase invDB = new InventoryDatabase(supp);
                         invDB.deleteSupplier();
+                        break;
                     }
-                    else if(choice == "2"){
+                    else if(choice.equals("2")){
                         break Outer;
                     }
                     else{
@@ -187,8 +193,27 @@ public class SupplierManagement {
                         continue;
                     }
                 }
-                
-                
+            }
+            else{
+                while(true){
+                    System.out.println("Warning: Are you sure you want to delete the supplier?");
+                    System.out.println("This action cannot be undone. Are you sure you want to proceed?");
+                    System.out.print("1. Delete\n2. Cancel\nPlease enter your choice:");
+                    String choice = Sc.nextLine();
+                    if(choice.equals("1")){
+                        Supplier supp = new Supplier(supplierToDelete);
+                        InventoryDatabase invDB = new InventoryDatabase(supp);
+                        invDB.deleteSupplier();
+                        break;
+                    }
+                    else if(choice.equals("2")){
+                        break Outer;
+                    }
+                    else{
+                        System.out.println("Invalid choice. Try again.");
+                        continue;
+                    }
+                }
             }
             
             

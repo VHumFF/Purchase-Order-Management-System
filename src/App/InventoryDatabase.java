@@ -39,6 +39,10 @@ public class InventoryDatabase {
                 String[] dataRecords = line.strip().split(";");
                 dataList.add(dataRecords);
             }
+            
+
+            reader.close();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,10 +57,33 @@ public class InventoryDatabase {
         }
     }
     
-    private void writeToTextFile(String[] data){
+    private void writeToTextFile(String[] data, File filepath){
         try
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, false));
+            String dataText = "";
+            
+            for (int i = 0; i < data.length; i++) {
+                dataText += data[i];
+                if (i < data.length - 1) {
+                    dataText += ";";
+                }
+            }
+
+            writer.write(dataText+="\n");
+            writer.close();
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    private void appendToTextFile(String[] data, File filepath){
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true));
             String dataText = "";
             
             for (int i = 0; i < data.length; i++) {
@@ -92,7 +119,7 @@ public class InventoryDatabase {
         String supplierID = "SP" + generateID();
         String [] suppInfo = {supplierID, supplierName, supplierContact};
         
-        writeToTextFile(suppInfo);
+        appendToTextFile(suppInfo, file);
         
         System.out.println(System.lineSeparator().repeat(50));
         System.out.println("Supplier registration successful.");
@@ -181,31 +208,49 @@ public class InventoryDatabase {
                 }
                 supplier_item_List.add(updatedSupplier);
             }
-            
-            
+            else{
+                String[] updatedSupplier = new String[supplier.length];
+                System.arraycopy(supplier, 0, updatedSupplier, 0, supplier.length);
+                supplier_item_List.add(updatedSupplier);
+            }
+
         }
         
         return supplier_item_List;
     }
     
+    
     public void deleteSupplier(){
         String supplierID = supp.getSuppID();
-        ArrayList<String[]> SupplierList = getAllData(file);
+        ArrayList<String[]> supplierList = getAllData(file);
+        
+        ArrayList<String[]> updatedSupplierList = new ArrayList<>();
+        for(String[] supplier: supplierList){
+            if(!(supplier[0].equals(supplierID))){
+                updatedSupplierList.add(supplier);
+            }
+        }
+        
+        
+        writeToTextFile(updatedSupplierList.get(0), file);
+        for(int i = 1; i < updatedSupplierList.size(); i++){
+            appendToTextFile(updatedSupplierList.get(i), file);
+        }
         
         File itemTF = new File("Database/Item.txt");
-        ArrayList<String[]> DataList = getAllData(itemTF);
+        ArrayList<String[]> itemList = getAllData(itemTF);
         
-        
-        
-        
-        
+        for(String[] item: itemList){
+            if(item[5].equals(supplierID)){
+                item[5] = "-";
+            }
+        }
+        writeToTextFile(itemList.get(0), itemTF);
+        for(int i = 1; i < itemList.size(); i++){
+            appendToTextFile(itemList.get(i), itemTF);
+        }
         
     }
-    
-    
-    
-    
-
 }
 
 
