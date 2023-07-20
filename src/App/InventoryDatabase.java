@@ -16,20 +16,13 @@ import java.util.Scanner;
  * @author verno
  */
 public class InventoryDatabase {
-    private File file;
-    private Supplier supp;
-    
+
     public InventoryDatabase(){
         
     }
     
-    public InventoryDatabase(Supplier supp){
-        this.supp = supp;
-        file = new File("Database/Supplier.txt");
-        
-    }
     
-    private ArrayList<String[]> getAllData(File filepath){
+    public ArrayList<String[]> getAllData(File filepath){
         ArrayList<String[]> dataList = new ArrayList<String[]>();
         try
         {
@@ -57,7 +50,7 @@ public class InventoryDatabase {
         }
     }
     
-    private void writeToTextFile(String[] data, File filepath){
+    public void writeToTextFile(String[] data, File filepath){
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, false));
@@ -80,7 +73,7 @@ public class InventoryDatabase {
     }
     
     
-    private void appendToTextFile(String[] data, File filepath){
+    public void appendToTextFile(String[] data, File filepath){
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true));
@@ -102,33 +95,7 @@ public class InventoryDatabase {
         }
     }
     
-    public void registerSupplier(){
-        Scanner Sc = new Scanner(System.in);
-        String supplierName = supp.getSuppName();
-        String supplierContact = supp.getSuppContact();
-
-        boolean isDuplicate = isDuplicateName(supplierName);
-        
-        if(isDuplicate){
-            System.out.println(System.lineSeparator().repeat(50));
-            System.out.println("Error: Supplier name already exists.");
-            System.out.println("Press [Enter] to continue...");
-            Sc.nextLine();
-            return;
-        }
-        String supplierID = "SP" + generateID();
-        String [] suppInfo = {supplierID, supplierName, supplierContact};
-        
-        appendToTextFile(suppInfo, file);
-        
-        System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("Supplier registration successful.");
-        System.out.println("Press [Enter] to continue...");
-        Sc.nextLine();
-    }
-    
-    
-    private boolean isDuplicateName(String Name){
+    public boolean isDuplicateName(String Name, File file){
 
         try
         {
@@ -151,7 +118,7 @@ public class InventoryDatabase {
     }
     
 
-    private String generateID()
+    public String generateID(File file)
     {
         ArrayList<String[]> dataList = getAllData(file);
 
@@ -174,86 +141,6 @@ public class InventoryDatabase {
 
         return newIndex;
     }
-    
-    public ArrayList<String[]> getSupplierItemList(){
-        File suppFile = new File("Database/Supplier.txt");
-        ArrayList<String[]> suppList = getAllData(suppFile);
-        if(suppList == null){
-            return suppList;
-        }
-        
-        File itemFile = new File("Database/Item.txt");
-        ArrayList<String[]> itemList = getAllData(itemFile);
-        if(itemList == null){
-            return suppList;
-        }
-        
-        ArrayList<String[]> supplier_item_List = new ArrayList<>();
-        
-        for (String[] supplier : suppList) {
-            List<String> itemID = new ArrayList<>();
-            String supplierID = supplier[0];
-
-            for (String[] item : itemList) {
-                if (item[5].equals(supplierID)) {
-                    itemID.add(item[0]);
-                }
-            }
-            
-            if (!itemID.isEmpty()) {
-                String[] updatedSupplier = new String[supplier.length + itemID.size()];
-                System.arraycopy(supplier, 0, updatedSupplier, 0, supplier.length);
-                for (int i = 0; i < itemID.size(); i++) {
-                    updatedSupplier[supplier.length + i] = itemID.get(i);
-                }
-                supplier_item_List.add(updatedSupplier);
-            }
-            else{
-                String[] updatedSupplier = new String[supplier.length];
-                System.arraycopy(supplier, 0, updatedSupplier, 0, supplier.length);
-                supplier_item_List.add(updatedSupplier);
-            }
-
-        }
-        
-        return supplier_item_List;
-    }
-    
-    
-    public void deleteSupplier(){
-        String supplierID = supp.getSuppID();
-        ArrayList<String[]> supplierList = getAllData(file);
-        
-        ArrayList<String[]> updatedSupplierList = new ArrayList<>();
-        for(String[] supplier: supplierList){
-            if(!(supplier[0].equals(supplierID))){
-                updatedSupplierList.add(supplier);
-            }
-        }
-        
-        
-        writeToTextFile(updatedSupplierList.get(0), file);
-        for(int i = 1; i < updatedSupplierList.size(); i++){
-            appendToTextFile(updatedSupplierList.get(i), file);
-        }
-        
-        File itemTF = new File("Database/Item.txt");
-        ArrayList<String[]> itemList = getAllData(itemTF);
-        
-        for(String[] item: itemList){
-            if(item[5].equals(supplierID)){
-                item[5] = "-";
-            }
-        }
-        writeToTextFile(itemList.get(0), itemTF);
-        for(int i = 1; i < itemList.size(); i++){
-            appendToTextFile(itemList.get(i), itemTF);
-        }
-        
-    }
-    
-    
-
 }
 
 
