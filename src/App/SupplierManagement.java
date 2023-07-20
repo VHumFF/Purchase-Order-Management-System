@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- * @author verno
- */
+
 public class SupplierManagement {
     private File suppTF = new File("Database/Supplier.txt");
     private File itemTF = new File("Database/Item.txt");
@@ -314,7 +311,7 @@ public class SupplierManagement {
         }
     }
     
-    private boolean selectSuppAttributeAndEdit(Supplier supp){
+    private void selectSuppAttributeAndEdit(Supplier supp){
         Scanner Sc = new Scanner(System.in);
         while(true){
             System.out.println("==============================");
@@ -326,27 +323,68 @@ public class SupplierManagement {
             System.out.print("1. Supplier Name\n2. Supplier Contact Information\n0. Back\nPlease enter your choice:");
             String choice = Sc.nextLine();
             if(choice.equals("1")){
-                System.out.print("Enter supplier new name:");
-                String suppName = Sc.nextLine();
-                boolean nameValid = validateSupplierName(suppName);
-                supp.setSuppName(suppName);
-
-                return true;
+                while(true){
+                    System.out.print("Enter supplier new name:");
+                    String suppName = Sc.nextLine();
+                    boolean nameValid = validateSupplierName(suppName);
+                    if(!nameValid){
+                        continue;
+                    }
+                    supp.setSuppName(suppName);
+                    updateEditSupplier(supp);
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Supplier detail updated successfully");
+                    System.out.println("Press [Enter] to continue...");
+                    Sc.nextLine();
+                    break;
+                }
             }
             else if(choice.equals("2")){
-                System.out.print("Enter supplier new contact:");
-                String suppContact = Sc.nextLine();
-                supp.setSuppContact(suppContact);
-                return true;
+                while(true){
+                    System.out.print("Enter supplier new contact:");
+                    String suppContact = Sc.nextLine();
+                    boolean contactValid = validateSupplierContact(suppContact);
+                    if(!contactValid){
+                        continue;
+                    }
+                    supp.setSuppContact(suppContact);
+                    updateEditSupplier(supp);
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Supplier detail updated successfully");
+                    System.out.println("Press [Enter] to continue...");
+                    Sc.nextLine();
+                    break;
+                }
+  
             }
             else if(choice.equals("0")){
-
-                return false;
+                break;
             }
             else{
-                return false;
+                System.out.println("Please enter a valid choice.");
+                continue;
             }
         }
+    }
+    
+    
+    public void updateEditSupplier(Supplier supp){
+        InventoryDatabase invDB = new InventoryDatabase();
+        ArrayList<String []> supplierList = invDB.getAllData(suppTF);
+        
+        for(String[] supplier : supplierList){
+            if(supplier[0].equals(supp.getSuppID())){
+                supplier[1] = supp.getSuppName();
+                supplier[2] = supp.getSuppContact();
+                break;
+            }
+        }
+        
+        invDB.writeToTextFile(supplierList.get(0), suppTF);
+        for(int i = 1; i < supplierList.size(); i++){
+            invDB.appendToTextFile(supplierList.get(i), suppTF);
+        }
+        
     }
     
     public ArrayList<String[]> displaySupplier(){
