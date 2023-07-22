@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 
 public class SupplierManagement {
-    private File suppTF = new File("Database/Supplier.txt");
-    private File itemTF = new File("Database/Item.txt");
+    
     
     //sales management submenu(supplier management)
     public void OpenPage(){
@@ -43,7 +42,7 @@ public class SupplierManagement {
                     System.out.println("Invalid choice. Please try again.");
                     break;
                 case "0":
-                    System.out.println("Exiting Sales Management Menu. Goodbye!");
+                    System.out.println("Exiting Supplier Management Menu. Goodbye!");
                     break Outer;
             }
         }
@@ -95,13 +94,13 @@ public class SupplierManagement {
         }
     }
     
-    public void registerSupplierToTextFile(Supplier supp){
+    private void registerSupplierToTextFile(Supplier supp){
         Scanner Sc = new Scanner(System.in);
         String supplierName = supp.getSuppName();
         String supplierContact = supp.getSuppContact();
         InventoryDatabase invDB = new InventoryDatabase();
 
-        boolean isDuplicate = invDB.isDuplicateName(supplierName, suppTF);
+        boolean isDuplicate = invDB.isDuplicateName(supplierName, InventoryDatabase.files.SUPPLIER.getFile());
         
         if(isDuplicate){
             System.out.println(System.lineSeparator().repeat(50));
@@ -110,10 +109,10 @@ public class SupplierManagement {
             Sc.nextLine();
             return;
         }
-        String supplierID = "SP" + invDB.generateID(suppTF);
+        String supplierID = "SP" + invDB.generateIDIndex(InventoryDatabase.files.SUPPLIER.getFile());
         String [] suppInfo = {supplierID, supplierName, supplierContact};
         
-        invDB.appendToTextFile(suppInfo, suppTF);
+        invDB.appendToTextFile(suppInfo, InventoryDatabase.files.SUPPLIER.getFile());
         
         System.out.println(System.lineSeparator().repeat(50));
         System.out.println("Supplier registration successful.");
@@ -124,7 +123,7 @@ public class SupplierManagement {
     
     
     private boolean validateSupplierName(String supplierName){
-        if(!supplierName.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9 ]{3,30}$")){
+        if(!supplierName.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9 ]{3,50}$")){
             Scanner sc = new Scanner(System.in);
             if(supplierName.length() < 3 || supplierName.length() > 50){
                 System.out.println("Invalid supplier name length. Please ensure supplier name has between 3 and 30 characters.");
@@ -239,11 +238,11 @@ public class SupplierManagement {
         }
     }
     
-    public void deleteSupplierFromTF(Supplier supp){
+    private void deleteSupplierFromTF(Supplier supp){
         String supplierID = supp.getSuppID();
         
         InventoryDatabase invDB = new InventoryDatabase();
-        ArrayList<String[]> supplierList = invDB.getAllData(suppTF);
+        ArrayList<String[]> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
         
         ArrayList<String[]> updatedSupplierList = new ArrayList<>();
         for(String[] supplier: supplierList){
@@ -251,22 +250,22 @@ public class SupplierManagement {
                 updatedSupplierList.add(supplier);
             }
         }
-        invDB.writeToTextFile(updatedSupplierList.get(0), suppTF);
+        invDB.writeToTextFile(updatedSupplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
         for(int i = 1; i < updatedSupplierList.size(); i++){
-            invDB.appendToTextFile(updatedSupplierList.get(i), suppTF);
+            invDB.appendToTextFile(updatedSupplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
         }
         
  
-        ArrayList<String[]> itemList = invDB.getAllData(itemTF);
+        ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
         
         for(String[] item: itemList){
             if(item[5].equals(supplierID)){
                 item[5] = "-";
             }
         }
-        invDB.writeToTextFile(itemList.get(0), itemTF);
+        invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
         for(int i = 1; i < itemList.size(); i++){
-            invDB.appendToTextFile(itemList.get(i), itemTF);
+            invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
         }
         
     }
@@ -368,9 +367,9 @@ public class SupplierManagement {
     }
     
     
-    public void updateEditSupplier(Supplier supp){
+    private void updateEditSupplier(Supplier supp){
         InventoryDatabase invDB = new InventoryDatabase();
-        ArrayList<String []> supplierList = invDB.getAllData(suppTF);
+        ArrayList<String []> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
         
         for(String[] supplier : supplierList){
             if(supplier[0].equals(supp.getSuppID())){
@@ -380,15 +379,14 @@ public class SupplierManagement {
             }
         }
         
-        invDB.writeToTextFile(supplierList.get(0), suppTF);
+        invDB.writeToTextFile(supplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
         for(int i = 1; i < supplierList.size(); i++){
-            invDB.appendToTextFile(supplierList.get(i), suppTF);
+            invDB.appendToTextFile(supplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
         }
         
     }
     
     public ArrayList<String[]> displaySupplier(){
-        InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String[]> supplierList = getSupplierItemList();
         if(supplierList == null){
             System.out.println("No supplier found.");
@@ -417,15 +415,15 @@ public class SupplierManagement {
     }
     
     
-    public ArrayList<String[]> getSupplierItemList(){
+    private ArrayList<String[]> getSupplierItemList(){
         InventoryDatabase invDB = new InventoryDatabase();
         
-        ArrayList<String[]> suppList = invDB.getAllData(suppTF);
+        ArrayList<String[]> suppList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
         if(suppList == null){
             return suppList;
         }
         
-        ArrayList<String[]> itemList = invDB.getAllData(itemTF);
+        ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
         if(itemList == null){
             return suppList;
         }

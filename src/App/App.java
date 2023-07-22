@@ -22,7 +22,8 @@ public class App {
         SALES_MANAGEMENT_MENU(SalesManagementMenu.class),
         PURCHASE_MANAGEMENT_MENU(PurchaseManagementMenu.class),
         USER_REGISTRATION_PAGE(UserRegistration.class),
-        SUPPLIER_MANAGEMENT(SupplierManagement.class);
+        SUPPLIER_MANAGEMENT(SupplierManagement.class),
+        ITEM_MANAGEMENT(ItemManagement.class);
         
         
         private final Class<?> pageClass;

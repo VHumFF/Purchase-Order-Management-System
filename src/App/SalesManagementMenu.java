@@ -31,6 +31,7 @@ public class SalesManagementMenu {
             switch(option){
                 case "1":
                     System.out.println("You selected Item Entry");
+                    appInstance.changePage(App.AppPage.ITEM_MANAGEMENT.getPageClass());
                     break;
                 case "2":
                     System.out.println("You selected Supplier Entry");
