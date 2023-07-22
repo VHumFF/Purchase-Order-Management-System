@@ -36,15 +36,11 @@ public class ItemManagement {
             switch(option){
                 case "1":
                     category = selectItemCategory();
-                    if(category != null){
-                        addItem(category);
-                    }
+                    addItem(category);
                     break;
                 case "2":
                     category = selectItemCategory();
-                    if(category != null){
-                        deleteItem(category);
-                    }
+                    deleteItem(category);
                     break;
                 case "3":
                     category = selectItemCategory();
@@ -57,9 +53,7 @@ public class ItemManagement {
                     break;
                 case "5":
                     category = selectItemCategory();
-                    if(category != null){
-                        displayItemListByCategory(category);
-                    }
+                    displayItemListByCategory(category);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -78,7 +72,6 @@ public class ItemManagement {
             System.out.println(String.format("%-2s %-1s", "1.", "Everyday Groceries"));
             System.out.println(String.format("%-2s %-1s", "2.", "Fresh Produce"));
             System.out.println(String.format("%-2s %-1s", "3.", "Fresh Food"));
-            System.out.println(String.format("%-2s %-1s", "0.", "Back"));
             System.out.print("Enter your choice:");
             String category;
             String option = Sc.nextLine();
@@ -95,9 +88,6 @@ public class ItemManagement {
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;
-                case "0":
-                    System.out.println("Exiting Item Management Menu. Goodbye!");
-                    return null;
             }
         }
     }
@@ -117,7 +107,7 @@ public class ItemManagement {
         while(true){
             System.out.println("======== Add New Item ========");
             //ask user to enter item name
-            System.out.print(String.format("Enter item Name:"));
+            System.out.print("Enter item Name:");
             itemName = Sc.nextLine();
             boolean itemNameValid = validateItemName(itemName);
             if(!itemNameValid){
@@ -126,7 +116,7 @@ public class ItemManagement {
             
             //Ask user to enter item price
             try{
-                System.out.print(String.format("Enter item unit price:"));
+                System.out.print("Enter item unit price:");
                 itemUnitPrice = Sc.nextFloat();
                 
                 // Consume newline left-over
@@ -294,9 +284,171 @@ public class ItemManagement {
 
     }     
     
-    private void editItem(){
+    private void editItem(String category){
+        Scanner Sc = new Scanner(System.in);
+        Item item = new Item(null, null, 0, 0, null, null);
+        
+        Outer:
+        while(true){
+            ArrayList<String[]> itemList = displayItemListByCategory(category);
+
+            System.out.print("\nEnter the item ID to edit or [BACK] to return:");
+            String itemToEdit = Sc.nextLine().toUpperCase();
+            if(itemToEdit.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
+            
+            boolean idFound = false;
+            
+            for(String[] i : itemList){
+                String itemID = i[0];
+                if(itemID.equals(itemToEdit)){
+                    item = new Item(i[0], i[1], Float.parseFloat(i[2]), Integer.parseInt(i[3]), i[4], i[5]);
+                    idFound = true;
+                    break;
+                }
+            }
+            
+            if(!idFound){
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Please enter a valid item ID");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                continue;
+            }
+            
+            selectItemAttributeAndEdit(item);
+        }
+    }
+    
+    private void selectItemAttributeAndEdit(Item item){
+        Scanner Sc = new Scanner(System.in);
+        Outer:
+        while(true){
+            System.out.println("=============================================Item List=============================================");
+            System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
+            System.out.println("===================================================================================================");
+            System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item.getItemID(), item.getItemName(),
+                    "RM"+item.getItemUnitPrice(), item.getItemStockQuantity(), item.getItemCategory(), item.getItemSupplierID());
+            
+            System.out.println("===================================================================================================\n");
+            System.out.println("Choose an attribute to edit:");
+            System.out.print("1. Item Name\n2. Item Unit Price\n3. Item Category\n4. Item Supplier\n0. Back\nPlease enter your choice:");
+            String choice = Sc.nextLine();
+            if(choice.equals("1")){
+                while(true){
+                    System.out.print("Enter item new name:");
+                    String itemName = Sc.nextLine();
+                    boolean nameValid = validateItemName(itemName);
+                    if(!nameValid){
+                        continue;
+                    }
+                    item.setItemName(itemName);
+                    updateEditItem(item);
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Item detail updated successfully");
+                    System.out.println("Press [Enter] to continue...");
+                    Sc.nextLine();
+                    break;
+                }
+            }
+            else if(choice.equals("2")){
+                while(true){
+                    try{
+                        System.out.print("Enter item new unit price:");
+                        float itemUnitPrice = Sc.nextFloat();
+                        
+                        // Consume newline left-over
+                        Sc.nextLine();
+                        item.setItemUnitPrice(itemUnitPrice);
+                        updateEditItem(item);
+                        System.out.println(System.lineSeparator().repeat(50));
+                        System.out.println("Item detail updated successfully");
+                        System.out.println("Press [Enter] to continue...");
+                        Sc.nextLine();
+                    }
+                    catch(InputMismatchException ie){
+                        // Clear invalid input left-over
+                        Sc.nextLine();
+                        System.out.println("Invalid input for price. Please enter a valid numerical value for the price (e.g., 10.99).");
+                        System.out.println("Press [Enter] to continue...");
+
+                        Sc.nextLine();
+                        System.out.println(System.lineSeparator().repeat(50));
+                        continue;
+                    }
+                    break;
+                }
+            }
+            else if(choice.equals("3")){
+                while(true){
+                    String itemCategory = selectItemCategory();
+                    item.setItemCategory(itemCategory);
+                    updateEditItem(item);
+                    break;
+                }
+            }
+            else if(choice.equals("4")){
+                SupplierManagement suppManage = new SupplierManagement();
+                ArrayList<String []> supplierList = new ArrayList();
+                while(true){
+                    supplierList = suppManage.displaySupplier();
+                
+                    System.out.print("Enter item new supplier:");
+                    String itemSupplierID = Sc.nextLine();
+                    
+                    boolean idFound = false;
+                    for(String[] supplier : supplierList){
+                        if(supplier[0].equals(itemSupplierID)){
+                            idFound = true;
+                        }
+                    }
+                    if(!idFound){
+                        continue;
+                    }
+
+                    item.setItemSupplier(itemSupplierID);
+                    updateEditItem(item);
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Item detail updated successfully");
+                    System.out.println("Press [Enter] to continue...");
+                    Sc.nextLine();
+                    break;
+                }
+            }
+            else if(choice.equals("0")){
+                break;
+            }
+            else{
+                System.out.println("Please enter a valid choice.");
+                continue;
+            }
+        }
+    }
+    
+    private void updateEditItem(Item item){
+        InventoryDatabase invDB = new InventoryDatabase();
+        ArrayList<String []> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
+        
+        for(String[] i : itemList){
+            if(i[0].equals(item.getItemID())){
+                i[1] = item.getItemName();
+                i[2] = String.format("%.2f", item.getItemUnitPrice());
+                i[4] = item.getItemCategory();
+                i[5] = item.getItemSupplierID();
+                break;
+            }
+        }
+        
+        invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
+        for(int i = 1; i < itemList.size(); i++){
+            invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
+        }
         
     }
+    
    
    
     
