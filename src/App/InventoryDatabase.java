@@ -14,9 +14,27 @@ import java.util.ArrayList;
  * @author verno
  */
 public class InventoryDatabase {
-
-    public InventoryDatabase(){
+    
+    
+    enum files{
+        ITEM("Database/Item.txt"),
+        SUPPLIER("Database/Supplier.txt");
         
+        private File textFile;
+        
+        
+        files(String filePath){
+            File dataTF = new File(filePath);
+            this.textFile = dataTF;
+        }
+        
+        public File getFile(){
+            return this.textFile;
+        }
+        
+    }
+    
+    public InventoryDatabase(){
     }
     
     
@@ -30,10 +48,7 @@ public class InventoryDatabase {
                 String[] dataRecords = line.strip().split(";");
                 dataList.add(dataRecords);
             }
-            
-
             reader.close();
-            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,7 +131,7 @@ public class InventoryDatabase {
     }
     
 
-    public String generateID(File file)
+    public String generateIDIndex(File file)
     {
         ArrayList<String[]> dataList = getAllData(file);
 
