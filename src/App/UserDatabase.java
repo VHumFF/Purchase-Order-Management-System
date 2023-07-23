@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
-
+/**
+User database class that handles text file related to user account and file handing operation
+ */
 public class UserDatabase {
     private User userData;
     

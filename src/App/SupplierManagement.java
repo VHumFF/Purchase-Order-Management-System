@@ -27,22 +27,30 @@ public class SupplierManagement {
             String option = Sc.nextLine();
             switch(option){
                 case "1":
+                    System.out.println(System.lineSeparator().repeat(50));
                     addSupplier();
                     break;
                 case "2":
+                    System.out.println(System.lineSeparator().repeat(50));
                     deleteSupplier();
                     break;
                 case "3":
+                    System.out.println(System.lineSeparator().repeat(50));
                     editSupplier();
                     break;
                 case "4":
                     displaySupplier();
+                    System.out.println("Press [Enter] to go back.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 default:
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Press [Enter] to continue.");
                     break;
                 case "0":
-                    System.out.println("Exiting Supplier Management Menu. Goodbye!");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
             }
         }
@@ -55,16 +63,17 @@ public class SupplierManagement {
         
         Outer:
         while(true){
+            //ask user to enter supplier name
             System.out.println("======== Add New Supplier ========");
-            System.out.print(String.format("Enter Supplier Name:"));
+            System.out.print("Enter Supplier Name:");
             supplierName = Sc.nextLine();
             boolean spNameValid = validateSupplierName(supplierName);
             if(!spNameValid){
                 continue;
             }
             
-            
-            System.out.print(String.format("Enter Supplier Contact No.:"));
+            //ask user to enter supplier contact
+            System.out.print("Enter Supplier Contact No.:");
             supplierContact = Sc.nextLine();
             boolean spContactValid = validateSupplierContact(supplierContact);
             if(!spContactValid){
@@ -72,7 +81,8 @@ public class SupplierManagement {
             }
             
             while(true){
-                System.out.println("Comfirm supplier detail.");
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("===Comfirm supplier detail.===\nSupplier Name : "+supplierName+"\nSupplier Contact : "+ supplierContact);
                 System.out.println("1. Comfirm");
                 System.out.println("0. Cancel");
                 System.out.print("Enter your choice:");
@@ -81,13 +91,18 @@ public class SupplierManagement {
                 case "1":
                     Supplier newSupp = new Supplier(supplierName, supplierContact);
                     registerSupplierToTextFile(newSupp);
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
                 case "0":
                     System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
                     
                 default:
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
             }
@@ -99,7 +114,8 @@ public class SupplierManagement {
         String supplierName = supp.getSuppName();
         String supplierContact = supp.getSuppContact();
         InventoryDatabase invDB = new InventoryDatabase();
-
+        
+        //check whether supplier name exist
         boolean isDuplicate = invDB.isDuplicateName(supplierName, InventoryDatabase.files.SUPPLIER.getFile());
         
         if(isDuplicate){
@@ -163,7 +179,7 @@ public class SupplierManagement {
         Outer:
         while(true){
             ArrayList<String[]> supplierList = displaySupplier();
-
+            //ask user to enter supplier id to delete
             System.out.print("\nEnter the supplier ID to delete or [BACK] to return:");
             String supplierToDelete = Sc.nextLine().toUpperCase();
             if(supplierToDelete.equals("BACK")){
@@ -175,24 +191,28 @@ public class SupplierManagement {
             ArrayList<String> itemSupplied = new ArrayList<>();
             for(String[] supplier : supplierList){
                 String supplierID = supplier[0];
+                //check whether user enter a valid supplier ID
                 if(supplierID.equals(supplierToDelete)){
                     idFound = true;
+                    //get the item supplied by the supplier
                     for(int i = 3; i < supplier.length; i++){
                         itemSupplied.add(supplier[i]);
                     }
                     break;
                 }
             }
+            
             if(!idFound){
                 System.out.println(System.lineSeparator().repeat(50));
                 System.out.println("Please enter a valid supplierID");
                 System.out.println("Press [Enter] to continue...");
                 Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
                 continue;
             }
             
+            
             if(!itemSupplied.isEmpty()){
+                //if supplier is associate with item, display warning.
                 while(true){
                     System.out.println("Warning: Deleting this supplier will also remove their association with the following items:");
                     for(String i : itemSupplied){
@@ -207,10 +227,14 @@ public class SupplierManagement {
                         break;
                     }
                     else if(choice.equals("2")){
+                        System.out.println(System.lineSeparator().repeat(50));
                         break Outer;
                     }
                     else{
+                        System.out.println(System.lineSeparator().repeat(50));
                         System.out.println("Invalid choice. Try again.");
+                        System.out.println("Press Enter to continue.");
+                        Sc.nextLine();
                         continue;
                     }
                 }
@@ -227,6 +251,7 @@ public class SupplierManagement {
                         break;
                     }
                     else if(choice.equals("2")){
+                        System.out.println(System.lineSeparator().repeat(50));
                         break Outer;
                     }
                     else{
@@ -245,24 +270,27 @@ public class SupplierManagement {
         ArrayList<String[]> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
         
         ArrayList<String[]> updatedSupplierList = new ArrayList<>();
+        //delete supplier from supplier list
         for(String[] supplier: supplierList){
             if(!(supplier[0].equals(supplierID))){
                 updatedSupplierList.add(supplier);
             }
         }
+        //update new supplier list to textfile
         invDB.writeToTextFile(updatedSupplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
         for(int i = 1; i < updatedSupplierList.size(); i++){
             invDB.appendToTextFile(updatedSupplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
         }
         
- 
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
-        
+        //update item supplier to "-" after item supplier is deleted
         for(String[] item: itemList){
             if(item[5].equals(supplierID)){
                 item[5] = "-";
             }
         }
+        //update item list
+        
         invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
         for(int i = 1; i < itemList.size(); i++){
             invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
@@ -277,7 +305,7 @@ public class SupplierManagement {
         Outer:
         while(true){
             ArrayList<String[]> supplierList = displaySupplier();
-
+            //ask user to enter supplier id to edit
             System.out.print("\nEnter the supplier ID to edit or [BACK] to return:");
             String supplierToEdit = Sc.nextLine().toUpperCase();
             if(supplierToEdit.equals("BACK")){
@@ -286,7 +314,7 @@ public class SupplierManagement {
             }
             
             boolean idFound = false;
-            
+            //check whether user enter a valid supplier id
             for(String[] supplier : supplierList){
                 String supplierID = supplier[0];
                 if(supplierID.equals(supplierToEdit)){
@@ -301,7 +329,6 @@ public class SupplierManagement {
                 System.out.println("Please enter a valid supplierID");
                 System.out.println("Press [Enter] to continue...");
                 Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
                 continue;
             }
             
@@ -313,6 +340,8 @@ public class SupplierManagement {
     private void selectSuppAttributeAndEdit(Supplier supp){
         Scanner Sc = new Scanner(System.in);
         while(true){
+            System.out.println(System.lineSeparator().repeat(50));
+            //ask user to select an attribute to edit
             System.out.println("==============================");
             System.out.println("Supplier ID     : " + supp.getSuppID());
             System.out.println("Supplier Name   : " + supp.getSuppName());
@@ -357,10 +386,14 @@ public class SupplierManagement {
   
             }
             else if(choice.equals("0")){
+                System.out.println(System.lineSeparator().repeat(50));
                 break;
             }
             else{
+                System.out.println(System.lineSeparator().repeat(50));
                 System.out.println("Please enter a valid choice.");
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
                 continue;
             }
         }
@@ -370,7 +403,7 @@ public class SupplierManagement {
     private void updateEditSupplier(Supplier supp){
         InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String []> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
-        
+        //update supplier info
         for(String[] supplier : supplierList){
             if(supplier[0].equals(supp.getSuppID())){
                 supplier[1] = supp.getSuppName();
@@ -378,7 +411,7 @@ public class SupplierManagement {
                 break;
             }
         }
-        
+        //update supplier info in text file
         invDB.writeToTextFile(supplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
         for(int i = 1; i < supplierList.size(); i++){
             invDB.appendToTextFile(supplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
@@ -392,7 +425,7 @@ public class SupplierManagement {
             System.out.println("No supplier found.");
             return null;
         }
-        
+        System.out.println(System.lineSeparator().repeat(50));
         System.out.println("================================Supplier List================================");
         System.out.printf("%-15s%-25s%-24s%s%n", "Supplier ID", "Supplier Name","Supplier Contact", "Item Supplied");
         System.out.println("=============================================================================");
@@ -433,7 +466,7 @@ public class SupplierManagement {
         for (String[] supplier : suppList) {
             List<String> itemID = new ArrayList<>();
             String supplierID = supplier[0];
-
+            //get item supplied by supplier
             for (String[] item : itemList) {
                 if (item[5].equals(supplierID)) {
                     itemID.add(item[0]);

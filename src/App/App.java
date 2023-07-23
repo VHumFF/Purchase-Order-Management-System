@@ -41,12 +41,13 @@ public class App {
     public void changePage(Class<?> pageClass){
         System.out.println(System.lineSeparator().repeat(50));//simulate clear screen
         try {
-        Object pageObject = pageClass.getDeclaredConstructor().newInstance();
-        pageClass.getDeclaredMethod("OpenPage").invoke(pageObject);
+            
+            Object pageObject = pageClass.getDeclaredConstructor().newInstance();
+            pageClass.getDeclaredMethod("OpenPage").invoke(pageObject);
         } 
         catch (Exception e) {
-        System.out.println("Error: Failed to change page.");
-        e.printStackTrace();
+            System.out.println("Error: Failed to change page.");
+            e.printStackTrace();
         }
     }
 

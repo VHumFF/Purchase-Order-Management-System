@@ -9,13 +9,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 /**
- *
- * @author verno
+Inventory database class that handles text file related to item, 
+supplier, purchase requisition and purchase order and file handing operation
  */
+
 public class InventoryDatabase {
     
-    
+    //enum that stores types of database file and file location of the text file
     enum files{
         ITEM("Database/Item.txt"),
         SUPPLIER("Database/Supplier.txt");
@@ -34,10 +36,11 @@ public class InventoryDatabase {
         
     }
     
+    //empty constructor
     public InventoryDatabase(){
     }
     
-    
+    //return data from textfile in Arraylist.
     public ArrayList<String[]> getAllData(File filepath){
         ArrayList<String[]> dataList = new ArrayList<String[]>();
         try
@@ -63,6 +66,7 @@ public class InventoryDatabase {
         }
     }
     
+    //overite file
     public void writeToTextFile(String[] data, File filepath){
         try
         {
@@ -85,7 +89,7 @@ public class InventoryDatabase {
         }
     }
     
-    
+    //append data to file
     public void appendToTextFile(String[] data, File filepath){
         try
         {
@@ -108,6 +112,7 @@ public class InventoryDatabase {
         }
     }
     
+    //check whether the item name or supplier name is already exist in the text file
     public boolean isDuplicateName(String Name, File file){
 
         try
@@ -130,14 +135,15 @@ public class InventoryDatabase {
         return false;
     }
     
-
+    //generate id index for record.
     public String generateIDIndex(File file)
     {
         ArrayList<String[]> dataList = getAllData(file);
 
         String lastID = "";
         String newIndex = "001";
-
+        
+        //get the last id of the record
         if (dataList != null) {
             for (String[] i : dataList) {
                 lastID = i[0];

@@ -30,6 +30,16 @@ public class Item {
         
     }
     
+    public Item(String itemID, String itemName, float itemUnitPrice, int itemStockQuantity, String itemCategory, String itemSupplierID){
+        this.itemID = itemID;
+        this.itemName = itemName;
+        this.itemUnitPrice = itemUnitPrice;
+        this.itemStockQuantity = itemStockQuantity;
+        this.itemCategory = itemCategory;
+        this.itemSupplierID = itemSupplierID;
+        
+    }
+    
     public String getItemID(){
         return itemID;
     }
@@ -52,6 +62,22 @@ public class Item {
     
     public String getItemSupplierID(){
         return itemSupplierID;
+    }
+    
+    public void setItemName(String itemName){
+        this.itemName = itemName;
+    }
+    
+    public void setItemUnitPrice(float itemUnitPrice){
+        this.itemUnitPrice = itemUnitPrice;
+    }
+    
+    public void setItemCategory(String itemCategory){
+        this.itemCategory = itemCategory;
+    }
+    
+    public void setItemSupplier(String itemSupplierID){
+        this.itemSupplierID = itemSupplierID;
     }
     
 }

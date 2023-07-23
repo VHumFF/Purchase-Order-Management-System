@@ -36,36 +36,45 @@ public class ItemManagement {
             switch(option){
                 case "1":
                     category = selectItemCategory();
+                    System.out.println(System.lineSeparator().repeat(50));
                     addItem(category);
                     break;
                 case "2":
                     category = selectItemCategory();
+                    System.out.println(System.lineSeparator().repeat(50));
                     deleteItem(category);
                     break;
                 case "3":
                     category = selectItemCategory();
-                    if(category != null){
-                        //editItem(category);
-                    }
+                    System.out.println(System.lineSeparator().repeat(50));
+                    editItem(category);
                     break;
                 case "4":
                     displayItemList();
+                    System.out.println("Press [Enter] to go back");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "5":
                     category = selectItemCategory();
+                    System.out.println(System.lineSeparator().repeat(50));
                     displayItemListByCategory(category);
                     break;
                 default:
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Press [Enter] to continue");
+                    Sc.nextLine();
                     break;
                 case "0":
-                    System.out.println("Exiting Item Management Menu. Goodbye!");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
             }
         }
     }
     
     private String selectItemCategory(){
+        System.out.println(System.lineSeparator().repeat(50));
         Scanner Sc = new Scanner(System.in);
         while(true){
             System.out.println("======== Category ========");
@@ -86,7 +95,11 @@ public class ItemManagement {
                     category = "Fresh Food";
                     return category;
                 default:
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
             }
         }
@@ -111,14 +124,13 @@ public class ItemManagement {
             itemName = Sc.nextLine();
             boolean itemNameValid = validateItemName(itemName);
             if(!itemNameValid){
+
                 continue;
             }
-            
             //Ask user to enter item price
             try{
                 System.out.print("Enter item unit price:");
                 itemUnitPrice = Sc.nextFloat();
-                
                 // Consume newline left-over
                 Sc.nextLine();
             }
@@ -132,7 +144,7 @@ public class ItemManagement {
                 System.out.println(System.lineSeparator().repeat(50));
                 continue;
             }
-            
+            System.out.println(System.lineSeparator().repeat(50));
             //ask user to enter item supplier
             SupplierManagement supManage = new SupplierManagement();
             ArrayList<String[]>supplierList = supManage.displaySupplier();
@@ -142,7 +154,7 @@ public class ItemManagement {
             itemSupplierID = Sc.nextLine();
 
             
-            
+            // if user enter "-" means the item have no supplier
             if(itemSupplierID != "-"){
                 boolean suppIDFound = false;
                 for(String [] i : supplierList){
@@ -151,12 +163,14 @@ public class ItemManagement {
                     }
                 }
                 if(!suppIDFound){
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid supplier ID. Please enter a valid supplier ID from the list or '-' to indicate no supplier.");
                     System.out.println("Press [Enter] to continue...");
                     Sc.nextLine();
                     continue;
                 }
             }
+            
             
             Item newItem = new Item(itemName, itemUnitPrice, itemStockQuantity, itemCategory, itemSupplierID);
             registerItemToTextFile(newItem);
@@ -167,9 +181,9 @@ public class ItemManagement {
     private void registerItemToTextFile(Item item){
         Scanner Sc = new Scanner(System.in);
         InventoryDatabase invDB = new InventoryDatabase();
-
-        boolean isDuplicate = invDB.isDuplicateName(item.getItemName(), InventoryDatabase.files.ITEM.getFile());
         
+        boolean isDuplicate = invDB.isDuplicateName(item.getItemName(), InventoryDatabase.files.ITEM.getFile());
+        //check whether item name exist.
         if(isDuplicate){
             System.out.println(System.lineSeparator().repeat(50));
             System.out.println("Error: Item name already exists.");
@@ -216,15 +230,17 @@ public class ItemManagement {
         Outer:
         while(true){
             ArrayList<String[]> itemList = displayItemListByCategory(category);
-
+            //ask user to enter item id from the list
             System.out.print("\nEnter the item ID to delete or [BACK] to return:");
             String itemToDelete = Sc.nextLine().toUpperCase();
+            
             if(itemToDelete.equals("BACK")){
                 System.out.println(System.lineSeparator().repeat(50));
                 break Outer;
             }
             
             boolean idFound = false;
+            //check whether user enter item id from list
             for(String[] item : itemList){
                 String itemID = item[0];
                 if(itemID.equals(itemToDelete)){
@@ -242,6 +258,7 @@ public class ItemManagement {
                 continue;
             }
             
+            
             while(true){
                 System.out.println("Warning: Are you sure you want to delete the item?");
                 System.out.println("This action cannot be undone. Are you sure you want to proceed?");
@@ -250,13 +267,19 @@ public class ItemManagement {
                 if(choice.equals("1")){
                     Item item = new Item(itemToDelete);
                     deleteItemFromTF(item);
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
                 else if(choice.equals("2")){
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
                 }
                 else{
+                    System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Invalid choice. Try again.");
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     continue;
                 }
             }
@@ -269,6 +292,7 @@ public class ItemManagement {
         InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
         
+        //remove item from arraylist
         ArrayList<String[]> updatedItemList = new ArrayList<>();
         for(String[] item: itemList){
             if(item[0].equals(itemID)){
@@ -276,6 +300,8 @@ public class ItemManagement {
             }
             updatedItemList.add(item);
         }
+        //write updated item list to item text file
+        
         invDB.writeToTextFile(updatedItemList.get(0), InventoryDatabase.files.ITEM.getFile());
         
         for(int i = 1; i < updatedItemList.size(); i++){
@@ -291,7 +317,7 @@ public class ItemManagement {
         Outer:
         while(true){
             ArrayList<String[]> itemList = displayItemListByCategory(category);
-
+            //ask user to enter item id from the list
             System.out.print("\nEnter the item ID to edit or [BACK] to return:");
             String itemToEdit = Sc.nextLine().toUpperCase();
             if(itemToEdit.equals("BACK")){
@@ -300,7 +326,7 @@ public class ItemManagement {
             }
             
             boolean idFound = false;
-            
+            //check whether user enter item id from list
             for(String[] i : itemList){
                 String itemID = i[0];
                 if(itemID.equals(itemToEdit)){
@@ -334,6 +360,7 @@ public class ItemManagement {
                     "RM"+item.getItemUnitPrice(), item.getItemStockQuantity(), item.getItemCategory(), item.getItemSupplierID());
             
             System.out.println("===================================================================================================\n");
+            //ask user to select attribute to be edit.
             System.out.println("Choose an attribute to edit:");
             System.out.print("1. Item Name\n2. Item Unit Price\n3. Item Category\n4. Item Supplier\n0. Back\nPlease enter your choice:");
             String choice = Sc.nextLine();
@@ -351,6 +378,7 @@ public class ItemManagement {
                     System.out.println("Item detail updated successfully");
                     System.out.println("Press [Enter] to continue...");
                     Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
             }
@@ -368,6 +396,8 @@ public class ItemManagement {
                         System.out.println("Item detail updated successfully");
                         System.out.println("Press [Enter] to continue...");
                         Sc.nextLine();
+                        System.out.println(System.lineSeparator().repeat(50));
+
                     }
                     catch(InputMismatchException ie){
                         // Clear invalid input left-over
@@ -387,6 +417,11 @@ public class ItemManagement {
                     String itemCategory = selectItemCategory();
                     item.setItemCategory(itemCategory);
                     updateEditItem(item);
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Item detail updated successfully");
+                    System.out.println("Press [Enter] to continue...");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
             }
@@ -415,14 +450,20 @@ public class ItemManagement {
                     System.out.println("Item detail updated successfully");
                     System.out.println("Press [Enter] to continue...");
                     Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
             }
             else if(choice.equals("0")){
+                System.out.println(System.lineSeparator().repeat(50));
                 break;
             }
             else{
+                System.out.println(System.lineSeparator().repeat(50));
                 System.out.println("Please enter a valid choice.");
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
                 continue;
             }
         }
@@ -432,6 +473,7 @@ public class ItemManagement {
         InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String []> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
         
+        //update item info
         for(String[] i : itemList){
             if(i[0].equals(item.getItemID())){
                 i[1] = item.getItemName();
@@ -441,12 +483,11 @@ public class ItemManagement {
                 break;
             }
         }
-        
+        //update item new info to item textfile
         invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
         for(int i = 1; i < itemList.size(); i++){
             invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
         }
-        
     }
     
    
@@ -458,7 +499,7 @@ public class ItemManagement {
             System.out.println("No item found.");
             return;
         }
-        
+        System.out.println(System.lineSeparator().repeat(50));
         System.out.println("=============================================Item List=============================================");
         System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
         System.out.println("===================================================================================================");
@@ -478,7 +519,7 @@ public class ItemManagement {
             return null;
         }
         
-        
+        System.out.println(System.lineSeparator().repeat(50));
         System.out.println("=============================================Item List=============================================");
         System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
         System.out.println("===================================================================================================");
