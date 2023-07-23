@@ -39,6 +39,7 @@ public class SalesManagementMenu {
                     break;
                 case "3":
                     System.out.println("You selected Daily Item-wise Sales Entry");
+                    appInstance.changePage(App.AppPage.SALES_RECORD_MANAGEMENT.getPageClass());
                     break;
                 case "4":
                     System.out.println("You selected Create Purchse Requisition");

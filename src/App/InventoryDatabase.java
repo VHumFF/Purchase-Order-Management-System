@@ -20,7 +20,8 @@ public class InventoryDatabase {
     //enum that stores types of database file and file location of the text file
     enum files{
         ITEM("Database/Item.txt"),
-        SUPPLIER("Database/Supplier.txt");
+        SUPPLIER("Database/Supplier.txt"),
+        SALES_RECORD("Database/SalesRecord.txt");
         
         private File textFile;
         

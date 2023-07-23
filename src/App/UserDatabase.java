@@ -16,6 +16,9 @@ User database class that handles text file related to user account and file hand
 public class UserDatabase {
     private User userData;
     
+    public UserDatabase(){
+        
+    }
     
     public UserDatabase(User user){
         this.userData = user;
@@ -115,4 +118,19 @@ public class UserDatabase {
         return null;
     }
     
+    public String getCurrentUser(){
+        File file = new File("Database/UserSession.txt");
+        String username = "";
+        try
+        {
+            String line;
+            
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            //get current user's username
+            username = reader.readLine().strip();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return username;
+    }
 }
