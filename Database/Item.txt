@@ -1,4 +1,4 @@
-IT001;food;12.2;30;Fresh Food;SP001
+IT001;food;12.2;40;Fresh Food;SP001
 IT002;food2;12.2;80;Fresh Food;SP001
 IT003;food3;12.2;80;Fresh Food;SP001
 IT004;food4;12.2;80;Fresh Food;SP002

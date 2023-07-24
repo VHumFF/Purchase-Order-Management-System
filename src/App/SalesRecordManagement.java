@@ -45,7 +45,7 @@ public class SalesRecordManagement {
                     editSalesRecord();
                     break;
                 case "4":
-
+                    displaySalesRecord();
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 default:
@@ -488,7 +488,7 @@ public class SalesRecordManagement {
         //update sales record list
         for(String[] record : salesRecordList){
             if(record[0].equals(sr.getSalesRecordID())){
-                record[3] = sr.getItemSoldQuantity();
+                record[4] = sr.getItemSoldQuantity();
                 break;
             }
         }
@@ -500,7 +500,86 @@ public class SalesRecordManagement {
     }
     
     
+    private void displaySalesRecord(){
+        InventoryDatabase invDB = new InventoryDatabase();
+        ArrayList<String[]> salesRecordList = invDB.getAllData(InventoryDatabase.files.SALES_RECORD.getFile());
+        if(salesRecordList == null){
+            return;
+        }
+        Scanner Sc = new Scanner(System.in);
+        int records_per_page = 5;
+        int totalPages = (salesRecordList.size() + records_per_page - 1) / records_per_page;
+        int currentPage = 1;
+        Outer:
+        while(true){
+            System.out.println(System.lineSeparator().repeat(50));
+            displayDataForPage(salesRecordList, currentPage, records_per_page);
+            System.out.println("Page Controls:");
+            System.out.println("1. First Page");
+            System.out.println("2. Previous Page");
+            System.out.println("3. Next Page");
+            System.out.println("4. Last Page");
+            System.out.println("0. Quit");
+            System.out.print("Enter your choice:");
+            String choice = Sc.nextLine();
+            switch(choice){
+                case "1":
+                    currentPage = 1;
+                    break;
+                case "2":
+                    if(currentPage != 1){
+                        currentPage--;
+                    }
+                    break;
+                case "3":
+                    if(currentPage != totalPages){
+                        currentPage++;
+                    }
+                    break;
+                case "4":
+                    currentPage = totalPages;
+                    break;
+                    
+                default:
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
+                    break;
+                    
+                case "0":
+                    System.out.println(System.lineSeparator().repeat(50));
+                    break Outer;
+            }
+            
+        }
+        
+        
+    }
     
+    private void displayDataForPage(ArrayList<String[]> salesRecordList, int currentPage, int records_per_page) {
+        int startIndex = (currentPage - 1) * records_per_page;
+        int endIndex = Math.min(startIndex + records_per_page, salesRecordList.size());
+
+        System.out.println("Page " + currentPage + " of " + ((salesRecordList.size() + records_per_page - 1) / records_per_page));
+        int count = 1;
+        for (int i = startIndex; i < endIndex; i++) {
+            String[] salesRecord = salesRecordList.get(i);
+            String totalPrice = String.format("%.2f", Float.parseFloat(salesRecord[3]) * Integer.parseInt(salesRecord[4]));
+            System.out.println(count+")");
+            System.out.println("================================ SALES RECORD ================================");
+            System.out.println("Sales Record Id : "+ salesRecord[0]);
+            System.out.println("Date : "+salesRecord[5]);
+            System.out.println("Record Keeper Id : "+ salesRecord[6]);
+            System.out.println("==============================================================================");
+            System.out.printf("%-10s%-23s%-15s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Quantity Sold", "Total");
+            System.out.println("==============================================================================");
+            System.out.printf("%-10s%-23s%-15s%-20s%s%n", salesRecord[1], salesRecord[2],
+                    "RM"+salesRecord[3], salesRecord[4], "RM"+totalPrice);
+            System.out.println("==============================================================================\n\n\n\n");
+            count++;
+        }
+    }
     
     
     
