@@ -27,10 +27,18 @@ public class PurchaseManagementMenu {
             String option = Sc.nextLine();
             switch(option){
                 case "1":
-                    System.out.println("You selected List of Items");
+                    ItemManagement im = new ItemManagement();
+                    im.displayItemList();
+                    System.out.println("Press [Enter] to go back");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "2":
-                    System.out.println("You selected Display List of Supplier");
+                    SupplierManagement sm = new SupplierManagement();
+                    sm.displaySupplier();
+                    System.out.println("Press [Enter] to go back.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "3":
                     System.out.println("You selected Display Requisition");
