@@ -13,6 +13,8 @@ public class App {
     }
     
     public void App(){
+        UserDatabase.initializeUserFile();
+        InventoryDatabase.initializeInventoryFile();
         changePage(AppPage.LOGIN_PAGE.getPageClass());
 }
     

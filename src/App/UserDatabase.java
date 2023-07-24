@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 
@@ -40,7 +41,7 @@ public class UserDatabase {
             return;
         }
         
-        File file = new File("Database/UserAccount.txt");
+        File file = new File("Database/User/UserAccount.txt");
         try
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
@@ -62,7 +63,7 @@ public class UserDatabase {
     
     private boolean checkUserExist(String username){
         
-        File file = new File("Database/UserAccount.txt");
+        File file = new File("Database/User/UserAccount.txt");
         try
         {
             String[] uInfo;
@@ -87,7 +88,7 @@ public class UserDatabase {
         String username = userData.getUname();
         String password = userData.getUpass();
 
-        File file = new File("Database/UserAccount.txt");
+        File file = new File("Database/User/UserAccount.txt");
         try
         {
             
@@ -121,7 +122,7 @@ public class UserDatabase {
     public void storeCurrentUserName(){
         try
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("Database/UserSession.txt", false));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Database/User/UserSession.txt", false));
             writer.write(userData.getUname());
             writer.close();
 
@@ -131,7 +132,7 @@ public class UserDatabase {
     }
     
     public String getCurrentUser(){
-        File file = new File("Database/UserSession.txt");
+        File file = new File("Database/User/UserSession.txt");
         String username = "";
         try
         {
@@ -145,4 +146,24 @@ public class UserDatabase {
         }
         return username;
     }
+    
+    public static void initializeUserFile(){
+        //Check whether it exist otherwise create it
+        File databaseFolder = new File("Database");
+        File userFolder = new File("Database/User");
+        File userAccountFile = new File("Database/User/UserAccount.txt");
+        File userSessionFile = new File("Database/User/UserSession.txt");
+        try{
+            if (!databaseFolder.exists()) {
+                Files.createDirectory(databaseFolder.toPath());
+                Files.createDirectory(userFolder.toPath());
+                userAccountFile.createNewFile();
+                userSessionFile.createNewFile();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 
@@ -19,12 +20,12 @@ public class InventoryDatabase {
     
     //enum that stores types of database file and file location of the text file
     enum files{
-        ITEM("Database/Item.txt"),
-        SUPPLIER("Database/Supplier.txt"),
-        SALES_RECORD("Database/SalesRecord.txt"),
-        USED_ITEM_ID_INDEX("Database/Used_Item_ID_Index.txt"),
-        USED_SUPPLIER_ID_INDEX("Database/Used_Supplier_ID_Index.txt"),
-        USED_SALES_RECORD_ID_INDEX("Database/Used_SALES_RECORD_ID_Index.txt");
+        ITEM("Database/Inventory/Item.txt"),
+        SUPPLIER("Database/Inventory/Supplier.txt"),
+        SALES_RECORD("Database/Inventory/SalesRecord.txt"),
+        USED_ITEM_ID_INDEX("Database/Inventory/Used_Item_ID_Index.txt"),
+        USED_SUPPLIER_ID_INDEX("Database/Inventory/Used_Supplier_ID_Index.txt"),
+        USED_SALES_RECORD_ID_INDEX("Database/Inventory/Used_SALES_RECORD_ID_Index.txt");
         
         private File textFile;
         
@@ -187,7 +188,33 @@ public class InventoryDatabase {
         return newIndex;
     }
     
-    
+    public static void initializeInventoryFile(){
+        //Check whether it exist otherwise create it
+        File databaseFolder = new File("Database");
+        File inventoryFolder = new File("Database/Inventory");
+        File itemFile = new File("Database/Inventory/Item.txt");
+        File supplierFile = new File("Database/Inventory/Supplier.txt");
+        File salesRecordFile = new File("Database/Inventory/SalesRecord.txt");
+        File item_Used_ID_File = new File("Database/Inventory/Used_Item_ID_Index.txt");
+        File supplier_Used_ID_File = new File("Database/Inventory/Used_Supplier_ID_Index.txt");
+        File sales_Record_Used_ID_File = new File("Database/Inventory/Used_SALES_RECORD_ID_Index.txt");
+
+        try{
+            if (!databaseFolder.exists()) {
+                Files.createDirectory(databaseFolder.toPath());
+                Files.createDirectory(inventoryFolder.toPath());
+                itemFile.createNewFile();
+                supplierFile.createNewFile();
+                salesRecordFile.createNewFile();
+                item_Used_ID_File.createNewFile();
+                supplier_Used_ID_File.createNewFile();
+                sales_Record_Used_ID_File.createNewFile();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 
