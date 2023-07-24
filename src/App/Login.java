@@ -26,8 +26,8 @@ public class Login {
             User LCredential = new User(username, password);
             UserDatabase uDB = new UserDatabase(LCredential);
             String role = uDB.validateUserCredential();
-            
             if(role != null){
+                uDB.storeCurrentUserName();
                 switch(role){
                     case "Admin":
                         appInstance.changePage(App.AppPage.ADMIN_PANEL.getPageClass());

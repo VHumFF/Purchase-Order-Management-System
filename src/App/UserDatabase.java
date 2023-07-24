@@ -118,6 +118,18 @@ public class UserDatabase {
         return null;
     }
     
+    public void storeCurrentUserName(){
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("Database/UserSession.txt", false));
+            writer.write(userData.getUname());
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String getCurrentUser(){
         File file = new File("Database/UserSession.txt");
         String username = "";
