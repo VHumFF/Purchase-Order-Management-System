@@ -67,6 +67,20 @@ public class InventoryDatabase {
         }
     }
     
+    public void clearFile(File filepath){
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, false));
+            String dataText = "";
+            writer.write(dataText);
+            writer.close();
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     //overite file
     public void writeToTextFile(String[] data, File filepath){
         try
@@ -161,6 +175,8 @@ public class InventoryDatabase {
 
         return newIndex;
     }
+    
+    
 }
 
 

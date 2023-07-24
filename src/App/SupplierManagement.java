@@ -179,6 +179,13 @@ public class SupplierManagement {
         Outer:
         while(true){
             ArrayList<String[]> supplierList = displaySupplier();
+            if(supplierList == null){
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
+            
             //ask user to enter supplier id to delete
             System.out.print("\nEnter the supplier ID to delete or [BACK] to return:");
             String supplierToDelete = Sc.nextLine().toUpperCase();
@@ -277,24 +284,32 @@ public class SupplierManagement {
             }
         }
         //update new supplier list to textfile
-        invDB.writeToTextFile(updatedSupplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
-        for(int i = 1; i < updatedSupplierList.size(); i++){
-            invDB.appendToTextFile(updatedSupplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
+        if(updatedSupplierList.isEmpty()){
+            invDB.clearFile(InventoryDatabase.files.SUPPLIER.getFile());
+        }
+        else{
+            invDB.writeToTextFile(updatedSupplierList.get(0), InventoryDatabase.files.SUPPLIER.getFile());
+            for(int i = 1; i < updatedSupplierList.size(); i++){
+                invDB.appendToTextFile(updatedSupplierList.get(i), InventoryDatabase.files.SUPPLIER.getFile());
+            }
         }
         
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
         //update item supplier to "-" after item supplier is deleted
-        for(String[] item: itemList){
-            if(item[5].equals(supplierID)){
-                item[5] = "-";
+        if(itemList != null){
+            for(String[] item: itemList){
+                if(item[5].equals(supplierID)){
+                    item[5] = "-";
+                }
+            }
+            //update item list
+
+            invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
+            for(int i = 1; i < itemList.size(); i++){
+                invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
             }
         }
-        //update item list
         
-        invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
-        for(int i = 1; i < itemList.size(); i++){
-            invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
-        }
         
     }
     
@@ -305,6 +320,12 @@ public class SupplierManagement {
         Outer:
         while(true){
             ArrayList<String[]> supplierList = displaySupplier();
+            if(supplierList == null){
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
             //ask user to enter supplier id to edit
             System.out.print("\nEnter the supplier ID to edit or [BACK] to return:");
             String supplierToEdit = Sc.nextLine().toUpperCase();
@@ -466,6 +487,7 @@ public class SupplierManagement {
         for (String[] supplier : suppList) {
             List<String> itemID = new ArrayList<>();
             String supplierID = supplier[0];
+            
             //get item supplied by supplier
             for (String[] item : itemList) {
                 if (item[5].equals(supplierID)) {

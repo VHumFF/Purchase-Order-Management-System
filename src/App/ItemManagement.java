@@ -230,6 +230,12 @@ public class ItemManagement {
         Outer:
         while(true){
             ArrayList<String[]> itemList = displayItemListByCategory(category);
+            if(itemList == null){
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
             //ask user to enter item id from the list
             System.out.print("\nEnter the item ID to delete or [BACK] to return:");
             String itemToDelete = Sc.nextLine().toUpperCase();
@@ -287,11 +293,11 @@ public class ItemManagement {
     }
         
     private void deleteItemFromTF(Item itemToDelete){
-       String itemID = itemToDelete.getItemID();
+        String itemID = itemToDelete.getItemID();
         
         InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
-        
+
         //remove item from arraylist
         ArrayList<String[]> updatedItemList = new ArrayList<>();
         for(String[] item: itemList){
@@ -301,12 +307,16 @@ public class ItemManagement {
             updatedItemList.add(item);
         }
         //write updated item list to item text file
-        
-        invDB.writeToTextFile(updatedItemList.get(0), InventoryDatabase.files.ITEM.getFile());
-        
-        for(int i = 1; i < updatedItemList.size(); i++){
-            invDB.appendToTextFile(updatedItemList.get(i), InventoryDatabase.files.ITEM.getFile());
+        if(itemList.isEmpty()){
+            invDB.clearFile( InventoryDatabase.files.ITEM.getFile());
         }
+        else{
+            invDB.writeToTextFile(updatedItemList.get(0), InventoryDatabase.files.ITEM.getFile());
+            for(int i = 1; i < updatedItemList.size(); i++){
+                invDB.appendToTextFile(updatedItemList.get(i), InventoryDatabase.files.ITEM.getFile());
+            }
+        }
+        
 
     }     
     
@@ -317,6 +327,12 @@ public class ItemManagement {
         Outer:
         while(true){
             ArrayList<String[]> itemList = displayItemListByCategory(category);
+            if(itemList == null){
+                System.out.println("Press [Enter] to continue.");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
             //ask user to enter item id from the list
             System.out.print("\nEnter the item ID to edit or [BACK] to return:");
             String itemToEdit = Sc.nextLine().toUpperCase();
