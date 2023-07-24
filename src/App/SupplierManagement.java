@@ -125,7 +125,7 @@ public class SupplierManagement {
             Sc.nextLine();
             return;
         }
-        String supplierID = "SP" + invDB.generateIDIndex(InventoryDatabase.files.SUPPLIER.getFile());
+        String supplierID = "SP" + invDB.generateIDIndex(InventoryDatabase.files.SUPPLIER.getFile(), InventoryDatabase.files.USED_SUPPLIER_ID_INDEX.getFile());
         String [] suppInfo = {supplierID, supplierName, supplierContact};
         
         invDB.appendToTextFile(suppInfo, InventoryDatabase.files.SUPPLIER.getFile());

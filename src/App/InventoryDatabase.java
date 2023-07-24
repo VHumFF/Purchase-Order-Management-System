@@ -21,7 +21,10 @@ public class InventoryDatabase {
     enum files{
         ITEM("Database/Item.txt"),
         SUPPLIER("Database/Supplier.txt"),
-        SALES_RECORD("Database/SalesRecord.txt");
+        SALES_RECORD("Database/SalesRecord.txt"),
+        USED_ITEM_ID_INDEX("Database/Used_Item_ID_Index.txt"),
+        USED_SUPPLIER_ID_INDEX("Database/Used_Supplier_ID_Index.txt"),
+        USED_SALES_RECORD_ID_INDEX("Database/Used_SALES_RECORD_ID_Index.txt");
         
         private File textFile;
         
@@ -151,27 +154,35 @@ public class InventoryDatabase {
     }
     
     //generate id index for record.
-    public String generateIDIndex(File file)
+    public String generateIDIndex(File file, File usedIndexFile)
     {
         ArrayList<String[]> dataList = getAllData(file);
-
-        String lastID = "";
+        ArrayList<String[]> usedIndex = getAllData(usedIndexFile);
+        String lastIndex = "";
         String newIndex = "001";
         
         //get the last id of the record
-        if (dataList != null) {
-            for (String[] i : dataList) {
-                lastID = i[0];
+        if (usedIndex != null) {
+            for (String[] i : usedIndex) {
+                lastIndex = i[0];
             }
         }
-        if (!lastID.isEmpty()) {
+        if (!lastIndex.isEmpty()) {
             // Extract the numeric part of the lastID and increment it
-            int lastIndex = Integer.parseInt(lastID.substring(2));
-            int Index = lastIndex + 1;
+            int Index = Integer.parseInt(lastIndex) + 1;
 
             newIndex = String.format("%03d", Index);
         }
-        
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(usedIndexFile, true));
+            writer.write(newIndex+"\n");
+            writer.close();
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return newIndex;
     }

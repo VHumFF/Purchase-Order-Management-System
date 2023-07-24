@@ -175,7 +175,7 @@ public class SalesRecordManagement {
         UserDatabase uDB = new UserDatabase();
         String[] itemSold = sr.getItemSold();
         
-        String salesRecordID = "SR" + invDB.generateIDIndex(InventoryDatabase.files.SALES_RECORD.getFile());
+        String salesRecordID = "SR" + invDB.generateIDIndex(InventoryDatabase.files.SALES_RECORD.getFile(), InventoryDatabase.files.USED_SALES_RECORD_ID_INDEX.getFile());
         String recordKeeper = uDB.getCurrentUser();
         String [] salesRecord = {salesRecordID, itemSold[0], itemSold[1], itemSold[2], itemSold[3], sr.getDate(), recordKeeper};
         invDB.appendToTextFile(salesRecord, InventoryDatabase.files.SALES_RECORD.getFile());

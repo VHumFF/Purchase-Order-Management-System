@@ -1,5 +1,8 @@
-IT001;food;12.2;40;Fresh Food;SP001
+IT001;food;12.2;20;Fresh Food;SP001
 IT002;food2;12.2;80;Fresh Food;SP001
 IT003;food3;12.2;80;Fresh Food;SP001
 IT004;food4;12.2;80;Fresh Food;SP002
 IT005;food5;12.2;80;Fresh Food;SP002
+IT006;cheese;12.32;0;Everyday Groceries;SP003
+IT007;horse meat;12.41;0;Fresh Food;SP003
+IT008;Spider;12.00;0;Fresh Food;SP002

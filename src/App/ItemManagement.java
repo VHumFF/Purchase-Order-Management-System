@@ -192,7 +192,7 @@ public class ItemManagement {
             return;
         }
         
-        String itemID = "IT" + invDB.generateIDIndex(InventoryDatabase.files.ITEM.getFile());
+        String itemID = "IT" + invDB.generateIDIndex(InventoryDatabase.files.ITEM.getFile(), InventoryDatabase.files.USED_ITEM_ID_INDEX.getFile());
         
         String [] itemInfo = {itemID, item.getItemName(), String.format("%.2f", item.getItemUnitPrice()),
             Integer.toString(item.getItemStockQuantity()), item.getItemCategory(), item.getItemSupplierID()};
@@ -203,6 +203,7 @@ public class ItemManagement {
         System.out.println("Item registration successful.");
         System.out.println("Press [Enter] to continue...");
         Sc.nextLine();
+        System.out.println(System.lineSeparator().repeat(50));
     }
     
     
