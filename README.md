@@ -4,7 +4,7 @@ The Purchase Order Management System is a Java-based system that leverages Objec
 Administrator:
 should have the rights to access and update all the application functionalities and data. 
 They are the authorized personnel to create the above mentioned three types of users involved in the POM system.
-•	User registration
+\n•	User registration
 
 
 Sales Manager:
