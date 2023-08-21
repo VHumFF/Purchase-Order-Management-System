@@ -23,9 +23,13 @@ public class InventoryDatabase {
         ITEM("Database/Inventory/Item.txt"),
         SUPPLIER("Database/Inventory/Supplier.txt"),
         SALES_RECORD("Database/Inventory/SalesRecord.txt"),
+        PURCHASE_REQUISITION("Database/Inventory/PurchaseRequisition.txt"),
         USED_ITEM_ID_INDEX("Database/Inventory/Used_Item_ID_Index.txt"),
         USED_SUPPLIER_ID_INDEX("Database/Inventory/Used_Supplier_ID_Index.txt"),
-        USED_SALES_RECORD_ID_INDEX("Database/Inventory/Used_SALES_RECORD_ID_Index.txt");
+        USED_SALES_RECORD_ID_INDEX("Database/Inventory/Used_SALES_RECORD_ID_Index.txt"),
+        USED_PURCHASE_REQUISITION_ID_INDEX("Database/Inventory/Used_Purchase_Requisition_ID_Index.txt");
+        
+        
         
         private File textFile;
         
@@ -195,9 +199,11 @@ public class InventoryDatabase {
         File itemFile = new File("Database/Inventory/Item.txt");
         File supplierFile = new File("Database/Inventory/Supplier.txt");
         File salesRecordFile = new File("Database/Inventory/SalesRecord.txt");
+        File purchaseRequisitionFile = new File("Database/Inventory/PurchaseRequisition.txt");
         File item_Used_ID_File = new File("Database/Inventory/Used_Item_ID_Index.txt");
         File supplier_Used_ID_File = new File("Database/Inventory/Used_Supplier_ID_Index.txt");
         File sales_Record_Used_ID_File = new File("Database/Inventory/Used_SALES_RECORD_ID_Index.txt");
+        File purchase_Requisition_Used_ID_File = new File("Database/Inventory/Used_Purchase_Requisition_ID_Index.txt");
 
         try{
             if (!databaseFolder.exists()) {
@@ -206,9 +212,11 @@ public class InventoryDatabase {
                 itemFile.createNewFile();
                 supplierFile.createNewFile();
                 salesRecordFile.createNewFile();
+                purchaseRequisitionFile.createNewFile();
                 item_Used_ID_File.createNewFile();
                 supplier_Used_ID_File.createNewFile();
                 sales_Record_Used_ID_File.createNewFile();
+                purchase_Requisition_Used_ID_File.createNewFile();
             }
         }
         catch (IOException e) {

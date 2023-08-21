@@ -73,7 +73,7 @@ public class ItemManagement {
         }
     }
     
-    private String selectItemCategory(){
+    public String selectItemCategory(){
         System.out.println(System.lineSeparator().repeat(50));
         Scanner Sc = new Scanner(System.in);
         while(true){
@@ -308,7 +308,7 @@ public class ItemManagement {
             updatedItemList.add(item);
         }
         //write updated item list to item text file
-        if(itemList.isEmpty()){
+        if(updatedItemList.isEmpty()){
             invDB.clearFile( InventoryDatabase.files.ITEM.getFile());
         }
         else{

@@ -21,9 +21,8 @@ public class SalesManagementMenu {
             System.out.println(String.format("%-2s %-1s", "1.", "Item Management"));
             System.out.println(String.format("%-2s %-1s", "2.", "Supplier Management"));
             System.out.println(String.format("%-2s %-1s", "3.", "Daily Item-wise Sales Entry"));
-            System.out.println(String.format("%-2s %-1s", "4.", "Create Purchse Requisition"));
-            System.out.println(String.format("%-2s %-1s", "5.", "Display Requisition"));
-            System.out.println(String.format("%-2s %-1s", "6.", "Display Purchaser Orders"));
+            System.out.println(String.format("%-2s %-1s", "4.", "Purchse Requisition Management"));
+            System.out.println(String.format("%-2s %-1s", "5.", "Display Purchaser Orders"));
             System.out.println(String.format("%-2s %-1s", "0.", "Exit"));
             System.out.print("Enter your choice:");
 
@@ -43,11 +42,9 @@ public class SalesManagementMenu {
                     break;
                 case "4":
                     System.out.println("You selected Create Purchse Requisition");
+                    appInstance.changePage(App.AppPage.PURCHASE_REQUISITION_MANAGEMENT.getPageClass());
                     break;
                 case "5":
-                    System.out.println("You selected Display Requisition");
-                    break;
-                case "6":
                     System.out.println("You selected Display Purchaser Orders");
                     break;
                 default:
