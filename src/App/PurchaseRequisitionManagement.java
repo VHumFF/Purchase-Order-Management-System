@@ -78,6 +78,7 @@ public class PurchaseRequisitionManagement {
             boolean IDFound = false;
             for(String[] item:itemList){
                 if(item[0].equals(selectedItemID)){
+                    
                     IDFound = true;
                     it.setItemID(item[0]);
                     it.setItemName(item[1]);
@@ -88,6 +89,7 @@ public class PurchaseRequisitionManagement {
                     break;
                 }
             }
+            
             if(!IDFound){
                 System.out.println(System.lineSeparator().repeat(50));
                 System.out.println("ItemID not Found");
@@ -97,6 +99,17 @@ public class PurchaseRequisitionManagement {
                 System.out.println(System.lineSeparator().repeat(50));
                 continue;
             }
+            else if(it.getItemSupplierID().equals("-")){
+                //cannot create PR if no supplier
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Item does not have a supplier. Unable to create PR.");
+                System.out.println("Please add a supplier to the item before creating a PR.");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                continue;
+            }
+            
             try
             {
                 System.out.print("Please enter purchase quantity:");
