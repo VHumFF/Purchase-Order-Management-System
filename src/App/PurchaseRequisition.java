@@ -6,8 +6,25 @@ package App;
 
 /**
  *
- * @author verno
+ * @author macbook
  */
 public class PurchaseRequisition {
+    private String prID;
+    private int prQuantity;
+    private Item item;
     
+    
+    public PurchaseRequisition(Item item, int prQuantity){
+        this.item = item;
+        this.prQuantity = prQuantity;
+    }
+    
+    
+    public Item getItem(){
+        return item;
+    }
+    
+    public int getPRQuantity(){
+        return prQuantity;
+    }
 }

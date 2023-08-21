@@ -26,7 +26,8 @@ public class App {
         USER_REGISTRATION_PAGE(UserRegistration.class),
         SUPPLIER_MANAGEMENT(SupplierManagement.class),
         ITEM_MANAGEMENT(ItemManagement.class),
-        SALES_RECORD_MANAGEMENT(SalesRecordManagement.class);
+        SALES_RECORD_MANAGEMENT(SalesRecordManagement.class),
+        PURCHASE_REQUISITION_MANAGEMENT(PurchaseRequisitionManagement.class);
         
         
         private final Class<?> pageClass;

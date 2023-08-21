@@ -64,12 +64,20 @@ public class Item {
         return itemSupplierID;
     }
     
+    public void setItemID(String itemID){
+        this.itemID = itemID;
+    }
+    
     public void setItemName(String itemName){
         this.itemName = itemName;
     }
     
     public void setItemUnitPrice(float itemUnitPrice){
         this.itemUnitPrice = itemUnitPrice;
+    }
+    
+    public void setItemQuantity(int itemStockQuantity){
+        this.itemStockQuantity = itemStockQuantity;
     }
     
     public void setItemCategory(String itemCategory){
