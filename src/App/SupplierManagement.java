@@ -298,10 +298,26 @@ public class SupplierManagement {
         //update item supplier to "-" after item supplier is deleted
         if(itemList != null){
             for(String[] item: itemList){
-                if(item[5].equals(supplierID)){
-                    item[5] = "-";
+                String itemNewSupplier = "";
+                String[] itemSupList = item[5].strip().split("\\|");
+                for(String sup:itemSupList){
+                    if(sup.equals(supplierID) || sup.equals("-")){
+                        continue;
+                    }
+                    itemNewSupplier += sup;
+                    if (!sup.equals(itemSupList[itemSupList.length - 1])) {
+                        itemNewSupplier += "|";
+                    }
                 }
+                if(itemNewSupplier.isEmpty()){
+                    item[5]="-";
+                    continue;
+                }
+                item[5] = itemNewSupplier;
             }
+            
+            
+            
             //update item list
 
             invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
