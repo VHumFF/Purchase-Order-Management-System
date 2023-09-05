@@ -27,7 +27,8 @@ public class App {
         SUPPLIER_MANAGEMENT(SupplierManagement.class),
         ITEM_MANAGEMENT(ItemManagement.class),
         SALES_RECORD_MANAGEMENT(SalesRecordManagement.class),
-        PURCHASE_REQUISITION_MANAGEMENT(PurchaseRequisitionManagement.class);
+        PURCHASE_REQUISITION_MANAGEMENT(PurchaseRequisitionManagement.class),
+        PURCHASE_ORDER_MANAGEMENT(PurchaseOrderManagement.class);
         
         
         private final Class<?> pageClass;

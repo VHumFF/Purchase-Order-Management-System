@@ -12,6 +12,7 @@ import java.util.Scanner;
  */
 public class PurchaseManagementMenu {
     public void OpenPage(){
+        App appInstance = new App();
         Scanner Sc = new Scanner(System.in);
         Outer:
         while(true){
@@ -44,7 +45,7 @@ public class PurchaseManagementMenu {
                     System.out.println("You selected Display Requisition");
                     break;
                 case "4":
-                    System.out.println("You selected Generate Purchase Order");
+                    appInstance.changePage(App.AppPage.PURCHASE_ORDER_MANAGEMENT.getPageClass());
                     break;
                 case "5":
                     System.out.println("You selected Display List of Purchaser Orders");

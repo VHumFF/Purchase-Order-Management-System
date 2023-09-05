@@ -24,11 +24,12 @@ public class InventoryDatabase {
         SUPPLIER("Database/Inventory/Supplier.txt"),
         SALES_RECORD("Database/Inventory/SalesRecord.txt"),
         PURCHASE_REQUISITION("Database/Inventory/PurchaseRequisition.txt"),
+        PURCHASE_ORDER("Database/Inventory/PurchaseOrder.txt"),
         USED_ITEM_ID_INDEX("Database/Inventory/Used_Item_ID_Index.txt"),
         USED_SUPPLIER_ID_INDEX("Database/Inventory/Used_Supplier_ID_Index.txt"),
         USED_SALES_RECORD_ID_INDEX("Database/Inventory/Used_SALES_RECORD_ID_Index.txt"),
-        USED_PURCHASE_REQUISITION_ID_INDEX("Database/Inventory/Used_Purchase_Requisition_ID_Index.txt");
-        
+        USED_PURCHASE_REQUISITION_ID_INDEX("Database/Inventory/Used_Purchase_Requisition_ID_Index.txt"),
+        USED_PURCHASE_ORDER_ID_INDEX("Database/Inventory/Used_Purchase_Order_ID_Index.txt");
         
         
         private File textFile;
@@ -204,6 +205,8 @@ public class InventoryDatabase {
         File supplier_Used_ID_File = new File("Database/Inventory/Used_Supplier_ID_Index.txt");
         File sales_Record_Used_ID_File = new File("Database/Inventory/Used_SALES_RECORD_ID_Index.txt");
         File purchase_Requisition_Used_ID_File = new File("Database/Inventory/Used_Purchase_Requisition_ID_Index.txt");
+        File purchaseOrderFile = new File("Database/Inventory/PurchaseOrder.txt");
+        File purchase_order_Used_ID_File = new File("Database/Inventory/Used_Purchase_Order_ID_Index.txt");
 
         try{
             if (!databaseFolder.exists()) {
@@ -217,6 +220,8 @@ public class InventoryDatabase {
                 supplier_Used_ID_File.createNewFile();
                 sales_Record_Used_ID_File.createNewFile();
                 purchase_Requisition_Used_ID_File.createNewFile();
+                purchaseOrderFile.createNewFile();
+                purchase_order_Used_ID_File.createNewFile();
             }
         }
         catch (IOException e) {

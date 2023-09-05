@@ -490,9 +490,13 @@ public class SupplierManagement {
             
             //get item supplied by supplier
             for (String[] item : itemList) {
-                if (item[5].equals(supplierID)) {
-                    itemID.add(item[0]);
+                String[] itemSupp = item[5].strip().split("\\|");
+                for(String supp : itemSupp){
+                    if (supp.equals(supplierID)) {
+                        itemID.add(item[0]);
+                    }
                 }
+                
             }
             if (!itemID.isEmpty()) {
                 String[] updatedSupplier = new String[supplier.length + itemID.size()];
