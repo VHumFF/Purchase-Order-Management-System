@@ -274,6 +274,8 @@ public class ItemManagement {
                 if(choice.equals("1")){
                     Item item = new Item(itemToDelete);
                     deleteItemFromTF(item);
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 }
@@ -295,8 +297,28 @@ public class ItemManagement {
         
     private void deleteItemFromTF(Item itemToDelete){
         String itemID = itemToDelete.getItemID();
-        
         InventoryDatabase invDB = new InventoryDatabase();
+        ArrayList<String []> prList = invDB.getAllData(InventoryDatabase.files.PURCHASE_REQUISITION.getFile());
+        ArrayList<String []> poList = invDB.getAllData(InventoryDatabase.files.PURCHASE_ORDER.getFile());
+        for(String[] pr: prList){
+            if(pr[1].equals(itemID)){
+                if(pr[10].equals("Pending") || pr[10].equals("Approved")){
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Item still have ongoing PR unable to delete Item.");
+                    return;
+                }
+            }
+        }
+        for(String[] po: poList){
+            if(po[1].equals(itemID)){
+                if(po[10].equals("Pending") || po[10].equals("Issued")){
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Item still have ongoing PO unable to delete Item.");
+                    return;
+                }
+            }
+        }
+        
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
 
         //remove item from arraylist
@@ -317,6 +339,9 @@ public class ItemManagement {
                 invDB.appendToTextFile(updatedItemList.get(i), InventoryDatabase.files.ITEM.getFile());
             }
         }
+        
+        System.out.println(System.lineSeparator().repeat(50));
+        System.out.println("Item delete successfully.");
         
 
     }     
@@ -368,13 +393,21 @@ public class ItemManagement {
     
     private void selectItemAttributeAndEdit(Item item){
         Scanner Sc = new Scanner(System.in);
+        String[] item_supp = item.getItemSupplierID().strip().split("\\|");
         Outer:
         while(true){
             System.out.println("=============================================Item List=============================================");
             System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
             System.out.println("===================================================================================================");
             System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item.getItemID(), item.getItemName(),
-                    "RM"+item.getItemUnitPrice(), item.getItemStockQuantity(), item.getItemCategory(), item.getItemSupplierID());
+                    "RM"+item.getItemUnitPrice(), item.getItemStockQuantity(), item.getItemCategory(), item_supp[0]);
+            if(item_supp.length > 1){
+                int i = 1;
+                while(i < item_supp.length){
+                    System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "", "","", "", "", item_supp[i]);
+                    i++;
+                } 
+            }
             
             System.out.println("===================================================================================================\n");
             //ask user to select attribute to be edit.
@@ -443,33 +476,8 @@ public class ItemManagement {
                 }
             }
             else if(choice.equals("4")){
-                SupplierManagement suppManage = new SupplierManagement();
-                ArrayList<String []> supplierList = new ArrayList();
-                while(true){
-                    supplierList = suppManage.displaySupplier();
-                
-                    System.out.print("Enter item new supplier:");
-                    String itemSupplierID = Sc.nextLine();
-                    
-                    boolean idFound = false;
-                    for(String[] supplier : supplierList){
-                        if(supplier[0].equals(itemSupplierID)){
-                            idFound = true;
-                        }
-                    }
-                    if(!idFound){
-                        continue;
-                    }
-
-                    item.setItemSupplier(itemSupplierID);
-                    updateEditItem(item);
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Item detail updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
-                    break;
-                }
+                editSupplier(item, item_supp);
+                break;
             }
             else if(choice.equals("0")){
                 System.out.println(System.lineSeparator().repeat(50));
@@ -485,6 +493,114 @@ public class ItemManagement {
             }
         }
     }
+    
+    private void editSupplier(Item item, String[] item_supp){
+        Scanner Sc = new Scanner(System.in);
+        SupplierManagement suppManage = new SupplierManagement();
+        ArrayList<String []> supplierList = new ArrayList();
+        Outer:
+        while(true){
+            System.out.print("Would you like to\n1.Add Supplier\n2.Remove Supplier\nEnter your choice:");
+            String choice = Sc.nextLine();
+            if(choice.equals("1")){
+                System.out.println(System.lineSeparator().repeat(50));
+                supplierList = suppManage.displaySupplier();
+                System.out.print("Enter supplier ID to add:");
+                String itemSupplierID = Sc.nextLine();
+                
+                for(String sup: item_supp){
+                    if(itemSupplierID.equals(sup)){
+                        System.out.println(System.lineSeparator().repeat(50));
+                        System.out.print("Enter Supplier already supplying this item.");
+                        System.out.println("Press [Enter] to continue.");
+                        Sc.nextLine();
+                        System.out.println(System.lineSeparator().repeat(50));
+                        break Outer;
+                    }
+                }
+
+                boolean idFound = false;
+                for(String[] supplier : supplierList){
+                    if(supplier[0].equals(itemSupplierID)){
+                        idFound = true;
+                    }
+                }
+                if(!idFound){
+                    continue;
+                }
+                String itemNewSupplier = "";
+                for(String sup:item_supp){
+                    if(sup.equals("-")){
+                        break;
+                    }
+                    itemNewSupplier += sup + "|";
+                }
+                itemNewSupplier += itemSupplierID;
+                
+                item.setItemSupplier(itemNewSupplier);
+                updateEditItem(item);
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Item detail updated successfully");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break;
+            }
+            else if(choice.equals("2")){
+                if(item_supp[0].equals("-")){
+                    System.out.println("no supplier to delete");
+                    break;
+                }
+                System.out.println("=============================================Item List=============================================");
+                System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
+                System.out.println("===================================================================================================");
+                System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item.getItemID(), item.getItemName(),
+                        "RM"+item.getItemUnitPrice(), item.getItemStockQuantity(), item.getItemCategory(), item_supp[0]);
+                if(item_supp.length > 1){
+                    int i = 1;
+                    while(i < item_supp.length){
+                        System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "", "","", "", "", item_supp[i]);
+                        i++;
+                    } 
+                }
+                System.out.println("===================================================================================================\n");
+                System.out.println("Enter supplier ID to remove:");
+                String supplierID = Sc.nextLine();
+                boolean idFound = false;
+                for(String sup : item_supp){
+                    if(sup.equals(supplierID)){
+                        idFound = true;
+                    }
+                }
+                if(!idFound){
+                    continue;
+                }
+                String itemNewSupplier = "";
+                for(String sup:item_supp){
+                    if(sup.equals(supplierID)){
+                        continue;
+                    }
+                    itemNewSupplier += sup;
+                    if (!sup.equals(item_supp[item_supp.length - 1])) {
+                        itemNewSupplier += "|";
+                    }
+                }
+                if(itemNewSupplier.isEmpty()){
+                    itemNewSupplier = "-";
+                }
+                
+                item.setItemSupplier(itemNewSupplier);
+                updateEditItem(item);
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Item detail updated successfully");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                break;
+            }
+        }
+    }
+    
     
     private void updateEditItem(Item item){
         InventoryDatabase invDB = new InventoryDatabase();
@@ -522,7 +638,15 @@ public class ItemManagement {
         System.out.println("===================================================================================================");
         
         for (String[] item : itemList) {
-            System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item[0], item[1], "RM"+item[2], item[3], item[4], item[5]);
+            String[] itemSupp = item[5].strip().split("\\|");
+            System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item[0], item[1], "RM"+item[2], item[3], item[4], itemSupp[0]);
+            if(itemSupp.length > 1){
+                int i = 1;
+                while(i < itemSupp.length){
+                    System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "", "","", "", "", itemSupp[i]);
+                    i++;
+                } 
+            } 
         }
         System.out.println("===================================================================================================\n");
        
@@ -544,7 +668,15 @@ public class ItemManagement {
         ArrayList<String[]> itemListByCategory = new ArrayList();
         for (String[] item : itemList) {
             if(item[4].equals(category)){
-                System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item[0], item[1], "RM"+item[2], item[3], item[4], item[5]);
+                String[] itemSupp = item[5].strip().split("\\|");
+                System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item[0], item[1], "RM"+item[2], item[3], item[4], itemSupp[0]);
+                if(itemSupp.length > 1){
+                int i = 1;
+                while(i < itemSupp.length){
+                    System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "", "","", "", "", itemSupp[i]);
+                    i++;
+                } 
+            } 
                 itemListByCategory.add(item);
             }
         }
