@@ -315,11 +315,7 @@ public class SupplierManagement {
                 }
                 item[5] = itemNewSupplier;
             }
-            
-            
-            
             //update item list
-
             invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
             for(int i = 1; i < itemList.size(); i++){
                 invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());

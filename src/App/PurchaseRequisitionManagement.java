@@ -66,6 +66,7 @@ public class PurchaseRequisitionManagement {
     
     private void createPR()
     {
+        Outer:
         while (true){
             Scanner Sc = new Scanner(System.in);
             ItemManagement im = new ItemManagement();
@@ -76,17 +77,56 @@ public class PurchaseRequisitionManagement {
             String selectedItemID = Sc.nextLine().toUpperCase();
 
             boolean IDFound = false;
+            boolean suppidValid = true;
             for(String[] item:itemList){
                 if(item[0].equals(selectedItemID)){
+                    InventoryDatabase invDB = new InventoryDatabase();
                     IDFound = true;
                     it.setItemID(item[0]);
                     it.setItemName(item[1]);
                     it.setItemUnitPrice(Float.parseFloat(item[2]));
                     it.setItemQuantity(Integer.parseInt(item[3]));
                     it.setItemCategory(item[4]);
-                    it.setItemSupplier(item[5]);
+                    //it.setItemSupplier(item[5]);
+                    String[] itemSupp = item[5].strip().split("\\|");
+                    if(itemSupp[0].equals("-")){
+                        System.out.println("Item does not have a supplier.");
+                        break Outer;
+                    }
+                    ArrayList<String[]> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
+                    System.out.println("=============================================Item List=======");
+                    System.out.printf("%-15s%-23s%s%n", "Supplier ID", "Supplier Name","Supplier Contact");
+                    System.out.println("=============================================================");
+                    
+                    for(String isup:itemSupp){
+                        for(String[] sup : supplierList){
+                            if(sup[0].equals(isup)){
+                                System.out.printf("%-15s%-23s%s%n", sup[0], sup[1], sup[2]);
+                            }
+                        }
+                    }
+                    System.out.println("=============================================================");
+                    boolean idFound2 = false;
+                    System.out.println("Please select a supplier:");
+                    String supid = Sc.nextLine();
+                    for(String isupp : itemSupp){
+                        if(isupp.equals(supid)){
+                            idFound2 = true;
+                        }
+                    }
+                    if(!idFound2){
+                        System.out.println("Please enter a valid supplier id.");
+                        suppidValid = false;
+                        break;
+                    }
+                    else{
+                        item[5] = supid;
+                    }
                     break;
                 }
+            }
+            if(!suppidValid){
+                continue;
             }
             if(!IDFound){
                 System.out.println(System.lineSeparator().repeat(50));

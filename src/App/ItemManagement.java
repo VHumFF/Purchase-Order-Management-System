@@ -679,7 +679,6 @@ public class ItemManagement {
             } 
                 itemListByCategory.add(item);
             }
-            System.out.println();
         }
         System.out.println("===================================================================================================\n");
        
