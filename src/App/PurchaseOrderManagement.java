@@ -41,15 +41,14 @@ public class PurchaseOrderManagement {
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "4":
-                    
+                    issuePO();
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "5":
-                    
+                    updateIssuedPOStatus();
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "6":
-                    
                     displayPOList("Pending");
                     break;
                 default:
@@ -153,7 +152,7 @@ public class PurchaseOrderManagement {
             }
             if (!IDFound)
             {
-                System.out.println("Please enter a valid Purchase Requisite ID.");
+                App.displayMessage("Please enter a valid Purchase Requisite ID.");
                 continue;
             }
             
@@ -173,7 +172,7 @@ public class PurchaseOrderManagement {
                 break;
             }
             else{
-                System.out.println("Please enter a valid choice");
+                App.displayMessage("Please enter a valid choice");
             }
                 
         }    
@@ -211,7 +210,7 @@ public class PurchaseOrderManagement {
             }
 
             if(!IDFound){
-                System.out.println("Please enter a valid Purchase Order ID.");
+                App.displayMessage("Please enter a valid Purchase Order ID.");
                     continue;
             }
             System.out.println("===============================================================Item List===============================================================");
@@ -227,13 +226,13 @@ public class PurchaseOrderManagement {
             if(choiceDeletePO.equals("Y"))
             {
                 deletePOFromFile(selectedPO);
-                System.out.println("Purchase Order successfully deleted from list.");
+                App.displayMessage("Purchase Order successfully deleted from list.");
             }
             else if(choiceDeletePO.equals("N")){
                 break;
             }
             else{
-                System.out.println("Please enter a valid choice");
+                App.displayMessage("Please enter a valid choice");
             }
         }
         
@@ -283,8 +282,8 @@ public class PurchaseOrderManagement {
             }
 
             if(!IDFound){
-                System.out.println("Please enter a valid Purchase Order ID.");
-                    continue;
+                App.displayMessage("Please enter a valid Purchase Order ID.");
+                continue;
             }
             System.out.println("===============================================================Item List===============================================================");
             System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
@@ -294,18 +293,18 @@ public class PurchaseOrderManagement {
                     selectedPO[2], selectedPO[3],"RM"+ selectedPO[4], selectedPO[7], selectedPO[6], selectedPO[9], selectedPO[8], selectedPO[10]);
             System.out.println("=======================================================================================================================================");
             System.out.println("Do you want to issue this Purchase Order? (Y/N): ");
-            String choiceIssuePO = Sc.nextLine();
+            String choiceIssuePO = Sc.nextLine().toUpperCase();
             
             if(choiceIssuePO.equals("Y"))
             {
                 saveIssuedPOtoFile(selectedPO);
-                System.out.println("Purchase Order successfully issued to supplier.");
+                App.displayMessage("Purchase Order successfully issued to supplier.");
             }
             else if(choiceIssuePO.equals("N")){
                 break;
             }
             else{
-                System.out.println("Please enter a valid choice");
+                App.displayMessage("Please enter a valid choice");
             }
         }
     }
@@ -350,8 +349,8 @@ public class PurchaseOrderManagement {
             }
 
             if(!IDFound){
-                System.out.println("Please enter a valid Purchase Order ID.");
-                    continue;
+                App.displayMessage("Please enter a valid Purchase Order ID.");
+                continue;
             }
             System.out.println("===============================================================Item List===============================================================");
             System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
@@ -366,13 +365,13 @@ public class PurchaseOrderManagement {
             if(choiceUpdatePO.equals("Y"))
             {
                 addPurchasedItemtoDB(selectedPO);
-                System.out.println("Purchase Order status successfully updated.");
+                App.displayMessage("Purchase Order status successfully updated.");
             }
             else if(choiceUpdatePO.equals("N")){
                 break;
             }
             else{
-                System.out.println("Please enter a valid choice");
+                App.displayMessage("Please enter a valid choice");
             }
         }
     }

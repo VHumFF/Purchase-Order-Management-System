@@ -95,11 +95,7 @@ public class ItemManagement {
                     category = "Fresh Food";
                     return category;
                 default:
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Please try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid choice. Please try again.");   
                     break;
             }
         }
@@ -137,11 +133,7 @@ public class ItemManagement {
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println("Invalid input for price. Please enter a valid numerical value for the price (e.g., 10.99).");
-                System.out.println("Press [Enter] to continue...");
-                
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for price. Please enter a valid numerical value for the price (e.g., 10.99).");
                 continue;
             }
             System.out.println(System.lineSeparator().repeat(50));
@@ -163,10 +155,7 @@ public class ItemManagement {
                     }
                 }
                 if(!suppIDFound){
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid supplier ID. Please enter a valid supplier ID from the list or '-' to indicate no supplier.");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
+                    App.displayMessage("Invalid supplier ID. Please enter a valid supplier ID from the list or '-' to indicate no supplier.");
                     continue;
                 }
             }
@@ -174,6 +163,7 @@ public class ItemManagement {
             
             Item newItem = new Item(itemName, itemUnitPrice, itemStockQuantity, itemCategory, itemSupplierID);
             registerItemToTextFile(newItem);
+            break;
         }
         
     }
@@ -185,10 +175,8 @@ public class ItemManagement {
         boolean isDuplicate = invDB.isDuplicateName(item.getItemName(), InventoryDatabase.files.ITEM.getFile());
         //check whether item name exist.
         if(isDuplicate){
-            System.out.println(System.lineSeparator().repeat(50));
-            System.out.println("Error: Item name already exists.");
-            System.out.println("Press [Enter] to continue...");
-            Sc.nextLine();
+            
+            App.displayMessage("Error: Item name already exists.");
             return;
         }
         
@@ -198,12 +186,8 @@ public class ItemManagement {
             Integer.toString(item.getItemStockQuantity()), item.getItemCategory(), item.getItemSupplierID()};
         
         invDB.appendToTextFile(itemInfo, InventoryDatabase.files.ITEM.getFile());
+        App.displayMessage("Item registration successful.");
         
-        System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("Item registration successful.");
-        System.out.println("Press [Enter] to continue...");
-        Sc.nextLine();
-        System.out.println(System.lineSeparator().repeat(50));
     }
     
     
@@ -213,14 +197,11 @@ public class ItemManagement {
         if(!itemName.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9 ]{2,50}$")){
             Scanner sc = new Scanner(System.in);
             if(itemName.length() < 3 || itemName.length() > 50){
-                System.out.println("Invalid Item name length. Please ensure Item name has between 2 and 50 characters.");
+                App.displayMessage("Invalid Item name length. Please ensure Item name has between 2 and 50 characters.");
             }
             else{
-                System.out.println("Invalid item name format. Please use only letters and digits, and ensure it contains at least one letter.");
+                App.displayMessage("Invalid item name format. Please use only letters and digits, and ensure it contains at least one letter.");
             }
-            System.out.println("Press [Enter] to continue...");
-            sc.nextLine();
-            System.out.println(System.lineSeparator().repeat(50));
             return false;
         }
         return true;
@@ -257,11 +238,7 @@ public class ItemManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid Item ID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid Item ID");
                 continue;
             }
             
@@ -284,11 +261,7 @@ public class ItemManagement {
                     break Outer;
                 }
                 else{
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid choice. Try again.");
                     continue;
                 }
             }
@@ -379,11 +352,7 @@ public class ItemManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid item ID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid item ID");
                 continue;
             }
             
@@ -424,11 +393,7 @@ public class ItemManagement {
                     }
                     item.setItemName(itemName);
                     updateEditItem(item);
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Item detail updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Item detail updated successfully");
                     break;
                 }
             }
@@ -442,21 +407,12 @@ public class ItemManagement {
                         Sc.nextLine();
                         item.setItemUnitPrice(itemUnitPrice);
                         updateEditItem(item);
-                        System.out.println(System.lineSeparator().repeat(50));
-                        System.out.println("Item detail updated successfully");
-                        System.out.println("Press [Enter] to continue...");
-                        Sc.nextLine();
-                        System.out.println(System.lineSeparator().repeat(50));
-
+                        App.displayMessage("Item detail updated successfully");
                     }
                     catch(InputMismatchException ie){
                         // Clear invalid input left-over
                         Sc.nextLine();
-                        System.out.println("Invalid input for price. Please enter a valid numerical value for the price (e.g., 10.99).");
-                        System.out.println("Press [Enter] to continue...");
-
-                        Sc.nextLine();
-                        System.out.println(System.lineSeparator().repeat(50));
+                        App.displayMessage("Invalid input for price. Please enter a valid numerical value for the price (e.g., 10.99).");
                         continue;
                     }
                     break;
@@ -467,11 +423,7 @@ public class ItemManagement {
                     String itemCategory = selectItemCategory();
                     item.setItemCategory(itemCategory);
                     updateEditItem(item);
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Item detail updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Item detail updated successfully");
                     break;
                 }
             }
@@ -484,11 +436,7 @@ public class ItemManagement {
                 break;
             }
             else{
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid choice.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid choice.");
                 continue;
             }
         }
@@ -510,11 +458,7 @@ public class ItemManagement {
                 
                 for(String sup: item_supp){
                     if(itemSupplierID.equals(sup)){
-                        System.out.println(System.lineSeparator().repeat(50));
-                        System.out.print("Enter Supplier already supplying this item.");
-                        System.out.println("Press [Enter] to continue.");
-                        Sc.nextLine();
-                        System.out.println(System.lineSeparator().repeat(50));
+                        App.displayMessage("Enter Supplier already supplying this item.");
                         break Outer;
                     }
                 }
@@ -539,11 +483,7 @@ public class ItemManagement {
                 
                 item.setItemSupplier(itemNewSupplier);
                 updateEditItem(item);
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Item detail updated successfully");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Item detail updated successfully");
                 break;
             }
             else if(choice.equals("2")){
@@ -591,11 +531,7 @@ public class ItemManagement {
                 
                 item.setItemSupplier(itemNewSupplier);
                 updateEditItem(item);
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Item detail updated successfully");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Item detail updated successfully");
                 break;
             }
         }

@@ -87,11 +87,7 @@ public class SalesRecordManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid Item ID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid Item ID");
                 continue;
             }
             
@@ -111,30 +107,16 @@ public class SalesRecordManagement {
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println("Invalid input for quantity sold. Please enter a valid integer value for the quantity.");
-                System.out.println("Press [Enter] to continue...");
-                
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for quantity sold. Please enter a valid integer value for the quantity.");
                 continue;
             }
             
             if(quantitySold > Integer.parseInt(itemInfo.get(3))){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Insufficient Stock!");
-                System.out.println("The quantity you entered is larger than the available stock for this item.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Insufficient Stock!\nThe quantity you entered is larger than the available stock for this item.");
                 continue;
             }
             else if(quantitySold <= 0){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Invalid input");
-                System.out.println("The quantity you entered is equal or less zero.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input.\nThe quantity you entered is equal or less zero.");
                 continue;
             }
             
@@ -147,12 +129,7 @@ public class SalesRecordManagement {
                 Sc.nextLine();
                 
                 if(markup_rate <= 0){
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid input");
-                    System.out.println("The markup you entered is equal or less zero.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid input\nThe markup rate you entered is equal or less zero.");
                     continue;
                 }
                 
@@ -161,11 +138,7 @@ public class SalesRecordManagement {
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println("Invalid input for markup rate. Please enter a valid value for the markup rate.");
-                System.out.println("Press [Enter] to continue...");
-                
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for markup rate. Please enter a valid value for the markup rate.");
                 continue;
             }
             
@@ -189,11 +162,7 @@ public class SalesRecordManagement {
                     break Outer;
                 }
                 else{
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Please try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid choice. Please try again.");
                     continue;
                 }
 
@@ -226,11 +195,8 @@ public class SalesRecordManagement {
             invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
         }
         
-        
-        System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("Sales record saved successfully.");
-        System.out.println("Press [Enter] to continue...");
-        Sc.nextLine();
+       
+        App.displayMessage("Sales record saved successfully.");
     }
     
     
@@ -243,10 +209,7 @@ public class SalesRecordManagement {
         while(true){
             ArrayList<String[]> salesRecordList = invDB.getAllData(InventoryDatabase.files.SALES_RECORD.getFile());
             if(salesRecordList == null){
-                System.out.println("No sales record.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("No sales record.");
                 break Outer;
             }
             //ask user to enter sale record id from the list
@@ -269,11 +232,7 @@ public class SalesRecordManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid sales record ID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid sales record ID");
                 continue;
             }
             
@@ -294,11 +253,7 @@ public class SalesRecordManagement {
                     break Outer;
                 }
                 else{
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid choice. Try again.");
                     continue;
                 }
             }
@@ -320,7 +275,7 @@ public class SalesRecordManagement {
             if(record[0].equals(recordID)){
                 long daysDifference = currentDate.toEpochDay() - LocalDate.parse(record[5], DateTimeFormatter.ISO_LOCAL_DATE).toEpochDay();
                 if(daysDifference > 3){
-                    System.out.println("The date is more than 3 days old.");
+                    App.displayMessage("The date is more than 3 days old.\nCannot delete record that is older than 3 days");
                     return;
                 }
                 else{
@@ -368,10 +323,7 @@ public class SalesRecordManagement {
         while(true){
             ArrayList<String[]> salesRecordList = invDB.getAllData(InventoryDatabase.files.SALES_RECORD.getFile());
             if(salesRecordList == null){
-                System.out.println("No record found.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("No record found.");
                 break Outer;
             }
             
@@ -397,20 +349,12 @@ public class SalesRecordManagement {
             LocalDate currentDate = LocalDate.now();
             long daysDifference = currentDate.toEpochDay() - LocalDate.parse(sr.getDate(), DateTimeFormatter.ISO_LOCAL_DATE).toEpochDay();
             if(daysDifference > 3){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("The date is more than 3 days old.");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("The date is more than 3 days old.\nCannot edit record that is older than 3 days");
                 continue;
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid sales record ID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Please enter a valid sales record ID");
                 continue;
             }
             editQuantitySold(sr);
@@ -433,13 +377,7 @@ public class SalesRecordManagement {
         }
         if(!itemFound){
             //do not allow edit of sales record if the item already been deleted.
-            System.out.println(System.lineSeparator().repeat(50));
-            System.out.println("Error: Item Not Found");
-            System.out.println("The item associated with this sales record has been deleted from the database");
-            System.out.println("Editing the quantity sold is not possible.");
-            System.out.println("Press [Enter] to continue.");
-            Sc.nextLine();
-            System.out.println(System.lineSeparator().repeat(50));
+            App.displayMessage("Error: Item Not Found.\nThe item associated with this sales record has been deleted from the database.\nEditing the quantity sold is not possible.");
             return;
         }
         
@@ -465,12 +403,7 @@ public class SalesRecordManagement {
                 // Consume newline left-over
                 Sc.nextLine();
                 if(quantitySold <= 0){
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid input");
-                    System.out.println("The quantity you entered is equal or less zero.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid input\nThe quantity you entered is equal or less zero.");
                     continue;
                 }
                 
@@ -480,20 +413,11 @@ public class SalesRecordManagement {
                 sr.setItemSoldQuantity(Integer.toString(quantitySold));
                 boolean updateSuccessful = updateEditSalesRecord(sr, itemQuantityInStock, QuantityInRecord);
                 if(updateSuccessful){
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Sales Record updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Sales Record updated successfully");
                     break;
                 }
                 else{
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Insufficient Stock!");
-                    System.out.println("The quantity you entered is larger than the available stock for this item.");
-                    System.out.println("Press [Enter] to continue.");
-                    //Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Insufficient Stock!\nThe quantity you entered is larger than the available stock for this item.");
                     break;
                 }
                 
@@ -502,11 +426,7 @@ public class SalesRecordManagement {
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println("Invalid input for quantity. Please enter a valid numerical value.");
-                System.out.println("Press [Enter] to continue...");
-                
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for quantity. Please enter a valid numerical value.");
                 continue;
             }
             
@@ -590,10 +510,7 @@ public class SalesRecordManagement {
                     break;
                     
                 default:
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Please try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
+                    App.displayMessage("Invalid choice. Please try again.");
                     break;
                     
                 case "0":
@@ -629,9 +546,4 @@ public class SalesRecordManagement {
             count++;
         }
     }
-    
-    
-    
-    
-
 }

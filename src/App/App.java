@@ -4,6 +4,8 @@
  */
 package App;
 
+import java.util.Scanner;
+
 
 public class App {
 
@@ -54,6 +56,15 @@ public class App {
             System.out.println("Error: Failed to change page.");
             e.printStackTrace();
         }
+    }
+    
+    public static void displayMessage(String message){
+        Scanner Sc = new Scanner(System.in);
+        System.out.println(System.lineSeparator().repeat(50));
+        System.out.println(message);
+        System.out.println("Press [Enter] to continue...");
+        Sc.nextLine();
+        System.out.println(System.lineSeparator().repeat(50));
     }
 
 }

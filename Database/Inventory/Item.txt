@@ -13,3 +13,5 @@ IT012;Sumeru Rose;2.99;10;Fresh Produce;-
 IT013;Shrimp Meat;19.99;40;Fresh Food;-
 IT014;Jueyun Chili;10.00;40;Fresh Produce;-
 IT015;Mondstadt Hash Brown;22.23;50;Fresh Produce;-
+IT015;cow milk;12.00;0;Everyday Groceries;SP001
+IT016;jib;12.00;0;Everyday Groceries;SP001
