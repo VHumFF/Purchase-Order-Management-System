@@ -17,9 +17,17 @@ public class Login {
         
         
         while(true){
-            System.out.println("======== Login Page ========");
+            System.out.println("========================= Login Page =========================");
+            System.out.println("Enter you credential to login or enter [EXIT] to exit program");
             System.out.print("Enter Username:");
             String username = Sc.nextLine();
+            
+            if(username.toUpperCase().equals("EXIT")){
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("Loging out System");
+                System.exit(0);
+            }
+            
             System.out.print("Enter Password:");
             String password = Sc.nextLine();
             
@@ -41,8 +49,7 @@ public class Login {
                 }
             }
             else{
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Login failed. Please check your username and password and try again.");
+                App.displayMessage("Login failed. Please check your username and password and try again.");
             }
         }
         

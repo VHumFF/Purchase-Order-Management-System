@@ -98,11 +98,7 @@ public class SupplierManagement {
                     break Outer;
                     
                 default:
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Invalid choice. Please try again.");
-                    System.out.println("Press [Enter] to continue.");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Invalid choice. Please try again.");
                     break;
                 }
             }
@@ -119,10 +115,8 @@ public class SupplierManagement {
         boolean isDuplicate = invDB.isDuplicateName(supplierName, InventoryDatabase.files.SUPPLIER.getFile());
         
         if(isDuplicate){
-            System.out.println(System.lineSeparator().repeat(50));
-            System.out.println("Error: Supplier name already exists.");
-            System.out.println("Press [Enter] to continue...");
-            Sc.nextLine();
+            App.displayMessage("Error: Supplier name already exists.");
+
             return;
         }
         String supplierID = "SP" + invDB.generateIDIndex(InventoryDatabase.files.SUPPLIER.getFile(), InventoryDatabase.files.USED_SUPPLIER_ID_INDEX.getFile());
@@ -130,10 +124,7 @@ public class SupplierManagement {
         
         invDB.appendToTextFile(suppInfo, InventoryDatabase.files.SUPPLIER.getFile());
         
-        System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("Supplier registration successful.");
-        System.out.println("Press [Enter] to continue...");
-        Sc.nextLine();
+        App.displayMessage("Supplier registration successful.");
     }
     
     
@@ -210,10 +201,7 @@ public class SupplierManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid supplierID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
+                App.displayMessage("Please enter a valid supplierID");
                 continue;
             }
             
@@ -238,10 +226,7 @@ public class SupplierManagement {
                         break Outer;
                     }
                     else{
-                        System.out.println(System.lineSeparator().repeat(50));
-                        System.out.println("Invalid choice. Try again.");
-                        System.out.println("Press Enter to continue.");
-                        Sc.nextLine();
+                        App.displayMessage("Invalid choice. Try again.");
                         continue;
                     }
                 }
@@ -298,12 +283,24 @@ public class SupplierManagement {
         //update item supplier to "-" after item supplier is deleted
         if(itemList != null){
             for(String[] item: itemList){
-                if(item[5].equals(supplierID)){
-                    item[5] = "-";
+                String itemNewSupplier = "";
+                String[] itemSupList = item[5].strip().split("\\|");
+                for(String sup:itemSupList){
+                    if(sup.equals(supplierID) || sup.equals("-")){
+                        continue;
+                    }
+                    itemNewSupplier += sup;
+                    if (!sup.equals(itemSupList[itemSupList.length - 1])) {
+                        itemNewSupplier += "|";
+                    }
                 }
+                if(itemNewSupplier.isEmpty()){
+                    item[5]="-";
+                    continue;
+                }
+                item[5] = itemNewSupplier;
             }
             //update item list
-
             invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
             for(int i = 1; i < itemList.size(); i++){
                 invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
@@ -346,10 +343,7 @@ public class SupplierManagement {
             }
             
             if(!idFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid supplierID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
+                App.displayMessage("Please enter a valid supplierID");
                 continue;
             }
             
@@ -381,10 +375,7 @@ public class SupplierManagement {
                     }
                     supp.setSuppName(suppName);
                     updateEditSupplier(supp);
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Supplier detail updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
+                    App.displayMessage("Supplier detail updated successfully");
                     break;
                 }
             }
@@ -398,10 +389,7 @@ public class SupplierManagement {
                     }
                     supp.setSuppContact(suppContact);
                     updateEditSupplier(supp);
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Supplier detail updated successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
+                    App.displayMessage("Supplier detail updated successfully");
                     break;
                 }
   
@@ -411,10 +399,7 @@ public class SupplierManagement {
                 break;
             }
             else{
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Please enter a valid choice.");
-                System.out.println("Press [Enter] to continue.");
-                Sc.nextLine();
+                App.displayMessage("Please enter a valid choice.");
                 continue;
             }
         }
@@ -490,9 +475,13 @@ public class SupplierManagement {
             
             //get item supplied by supplier
             for (String[] item : itemList) {
-                if (item[5].equals(supplierID)) {
-                    itemID.add(item[0]);
+                String[] itemSupp = item[5].strip().split("\\|");
+                for(String supp : itemSupp){
+                    if (supp.equals(supplierID)) {
+                        itemID.add(item[0]);
+                    }
                 }
+                
             }
             if (!itemID.isEmpty()) {
                 String[] updatedSupplier = new String[supplier.length + itemID.size()];

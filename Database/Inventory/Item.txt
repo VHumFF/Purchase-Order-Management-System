@@ -1,15 +1,17 @@
-IT001;Bacon;12.27;20;Fresh Food;-
+IT001;Bacon;12.27;0;Fresh Food;-
 IT002;Berry;15.23;30;Fresh Produce;-
 IT003;Matsutake;5.99;50;Fresh Produce;-
 IT004;Mysterious Meat;6.90;60;Fresh Food;-
 IT005;Rice;30.20;80;Everyday Groceries;-
 IT006;cheese;3.99;50;Fresh Food;-
 IT007;Raw Meat;16.00;10;Fresh Food;-
-IT008;Smoked Fowl;12.00;20;Fresh Food;-
+IT008;Smoked Fowl;12.00;20;Fresh Food;SP001|SP002
 IT009;Flour;16.99;50;Everyday Groceries;-
 IT010;Crab;35.00;60;Fresh Food;-
 IT011;Salt;10.99;70;Everyday Groceries;-
-IT011;Sumeru Rose;2.99;10;Fresh Produce;-
-IT012;Shrimp Meat;19.99;40;Fresh Food;-
-IT013;Jueyun Chili;10.00;40;Fresh Produce;-
-IT014;Mondstadt Hash Brown;22.23;50;Fresh Produce;-
+IT012;Sumeru Rose;2.99;10;Fresh Produce;-
+IT013;Shrimp Meat;19.99;40;Fresh Food;-
+IT014;Jueyun Chili;10.00;40;Fresh Produce;-
+IT015;Mondstadt Hash Brown;22.23;50;Fresh Produce;-
+IT015;cow milk;12.00;0;Everyday Groceries;SP001
+IT016;jib;12.00;0;Everyday Groceries;SP001

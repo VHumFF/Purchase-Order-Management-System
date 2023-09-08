@@ -66,6 +66,7 @@ public class PurchaseRequisitionManagement {
     
     private void createPR()
     {
+        Outer:
         while (true){
             Scanner Sc = new Scanner(System.in);
             ItemManagement im = new ItemManagement();
@@ -76,72 +77,81 @@ public class PurchaseRequisitionManagement {
             String selectedItemID = Sc.nextLine().toUpperCase();
 
             boolean IDFound = false;
+            boolean suppidValid = true;
             for(String[] item:itemList){
                 if(item[0].equals(selectedItemID)){
-                    
+                    InventoryDatabase invDB = new InventoryDatabase();
                     IDFound = true;
                     it.setItemID(item[0]);
                     it.setItemName(item[1]);
                     it.setItemUnitPrice(Float.parseFloat(item[2]));
                     it.setItemQuantity(Integer.parseInt(item[3]));
                     it.setItemCategory(item[4]);
-                    it.setItemSupplier(item[5]);
+                    //it.setItemSupplier(item[5]);
+                    String[] itemSupp = item[5].strip().split("\\|");
+                    if(itemSupp[0].equals("-")){
+                        App.displayMessage("Item does not have a supplier.");
+                        break Outer;
+                    }
+                    ArrayList<String[]> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
+                    System.out.println("=============================================Item List=======");
+                    System.out.printf("%-15s%-23s%s%n", "Supplier ID", "Supplier Name","Supplier Contact");
+                    System.out.println("=============================================================");
+                    
+                    for(String isup:itemSupp){
+                        for(String[] sup : supplierList){
+                            if(sup[0].equals(isup)){
+                                System.out.printf("%-15s%-23s%s%n", sup[0], sup[1], sup[2]);
+                            }
+                        }
+                    }
+                    System.out.println("=============================================================");
+                    boolean idFound2 = false;
+                    System.out.println("Please select a supplier:");
+                    String supid = Sc.nextLine();
+                    for(String isupp : itemSupp){
+                        if(isupp.equals(supid)){
+                            idFound2 = true;
+                        }
+                    }
+                    if(!idFound2){
+                        App.displayMessage("Please enter a valid supplier id.");
+                        suppidValid = false;
+                        break;
+                    }
+                    else{
+                        item[5] = supid;
+                    }
                     break;
                 }
             }
-            
+            if(!suppidValid){
+                continue;
+            }
             if(!IDFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("ItemID not Found");
-                System.out.println("Please Enter a valid ItemID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("ItemID not Found");
                 continue;
             }
-            else if(it.getItemSupplierID().equals("-")){
-                //cannot create PR if no supplier
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Item does not have a supplier. Unable to create PR.");
-                System.out.println("Please add a supplier to the item before creating a PR.");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
-                continue;
-            }
-            
             try
             {
                 System.out.print("Please enter purchase quantity:");
                 int prQuantity = Sc.nextInt();
                 Sc.nextLine();
                 if(prQuantity <= 0){
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Please enter a positive number");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Please enter a positive number");
                     continue;
                 }
                 
                 PurchaseRequisition pr = new PurchaseRequisition(it, prQuantity);
                 addPRToFile(pr);
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("PR created successfully");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("PR created successfully");
                 break;
                 
             }
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println("Invalid input for quantity. Please enter a valid number.");
-                System.out.println("Press [Enter] to continue...");
-
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for quantity. Please enter a valid number.");
             }            
         }
                
@@ -186,12 +196,7 @@ public class PurchaseRequisitionManagement {
                     }
             }
             if(!IDFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("prID not Found");
-                System.out.println("Please Enter a valid prID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("prID not Found. Please Enter a valid prID");
                 continue;
             }
 
@@ -202,11 +207,7 @@ public class PurchaseRequisitionManagement {
                 int newQuantity = Sc.nextInt();
                 if(newQuantity <= 0){
                     Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Please enter a positive number");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Please enter a positive number");
                     continue;
                 }
                 selectedPR[6] = Integer.toString(newQuantity);
@@ -216,12 +217,7 @@ public class PurchaseRequisitionManagement {
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
                 Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Invalid input for quantity. Please enter a valid number.");
-                System.out.println("Press [Enter] to continue...");
-
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("Invalid input for quantity. Please enter a valid number.");
             } 
         }
         
@@ -268,12 +264,7 @@ public class PurchaseRequisitionManagement {
                 }
             }
             if(!IDFound){
-                System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("prID not Found");
-                System.out.println("Please Enter a valid prID");
-                System.out.println("Press [Enter] to continue...");
-                Sc.nextLine();
-                System.out.println(System.lineSeparator().repeat(50));
+                App.displayMessage("prID not Found. Please Enter a valid prID");
                 continue;
             }
             
@@ -294,23 +285,15 @@ public class PurchaseRequisitionManagement {
                 String choice = Sc.nextLine();
                 if(choice.equals("1")){
                     deletePRfromFile(selectedPRID);
-                    
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("PR deleted successfully");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+
+                    App.displayMessage("PR deleted successfully");
                     break Outer;
                 }
                 else if(choice.equals("2")){
                     break Outer;
                 }
                 else{
-                    System.out.println(System.lineSeparator().repeat(50));
-                    System.out.println("Please Enter a valid choice");
-                    System.out.println("Press [Enter] to continue...");
-                    Sc.nextLine();
-                    System.out.println(System.lineSeparator().repeat(50));
+                    App.displayMessage("Please Enter a valid choice");
                     continue; 
                 }
             }
