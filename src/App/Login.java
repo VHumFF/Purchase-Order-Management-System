@@ -17,7 +17,7 @@ public class Login {
         
         
         while(true){
-            System.out.println("======== Login Page ========");
+            System.out.println("========================= Login Page =========================");
             System.out.println("Enter you credential to login or enter [EXIT] to exit program");
             System.out.print("Enter Username:");
             String username = Sc.nextLine();
