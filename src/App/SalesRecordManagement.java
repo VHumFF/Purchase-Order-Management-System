@@ -138,9 +138,41 @@ public class SalesRecordManagement {
                 continue;
             }
             
+            double markup_rate = 0;
+            String sold_unit_price = "0";
+            try{
+                System.out.print("Enter item markup rate:");
+                markup_rate = Sc.nextDouble();
+                // Consume newline left-over
+                Sc.nextLine();
+                
+                if(markup_rate <= 0){
+                    System.out.println(System.lineSeparator().repeat(50));
+                    System.out.println("Invalid input");
+                    System.out.println("The markup you entered is equal or less zero.");
+                    System.out.println("Press [Enter] to continue.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
+                    continue;
+                }
+                
+                sold_unit_price = String.format("%.2f",Double.parseDouble(itemInfo.get(2))*markup_rate);
+            }
+            catch(InputMismatchException ie){
+                // Clear invalid input left-over
+                Sc.nextLine();
+                System.out.println("Invalid input for markup rate. Please enter a valid value for the markup rate.");
+                System.out.println("Press [Enter] to continue...");
+                
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                continue;
+            }
+            
+            
             while(true){
                 System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("===Sales Record Detail.===\nItem ID : "+itemInfo.get(0)+"\nItem Name : "+ itemInfo.get(1)+"\nUnit Price : "+itemInfo.get(2)+"\nQuantity Sold : "+quantitySold);
+                System.out.println("===Sales Record Detail.===\nItem ID : "+itemInfo.get(0)+"\nItem Name : "+ itemInfo.get(1)+"\nSold unit Price : "+sold_unit_price+"\nQuantity Sold : "+quantitySold);
                 System.out.println("Do you want to save this sales record?");
                 System.out.println("1. Save record");
                 System.out.println("2. No");
@@ -148,7 +180,7 @@ public class SalesRecordManagement {
                 String choice = Sc.nextLine();
                 if(choice.equals("1")){
                     //add item to record
-                    String[] itemSold = {itemInfo.get(0), itemInfo.get(1), itemInfo.get(2),Integer.toString(quantitySold)};
+                    String[] itemSold = {itemInfo.get(0), itemInfo.get(1), sold_unit_price,Integer.toString(quantitySold)};
                     SalesRecord sr = new SalesRecord(date, itemSold);
                     saveSalesRecordToTF(sr);
                     break Outer;
@@ -276,21 +308,28 @@ public class SalesRecordManagement {
     
     private void deleteSalesRecordFromTF(SalesRecord sr){
         String recordID = sr.getSalesRecordID();
-        
+        LocalDate currentDate = LocalDate.now();
         InventoryDatabase invDB = new InventoryDatabase();
         ArrayList<String[]> salesRecordList = invDB.getAllData(InventoryDatabase.files.SALES_RECORD.getFile());
         ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
-
+        
         //remove item from arraylist
+        
         ArrayList<String[]> updatedRecordList = new ArrayList<>();
         for(String[] record: salesRecordList){
             if(record[0].equals(recordID)){
-                if(itemList != null){
-                    for(String[] item: itemList){
-                        if(record[1].equals(item[0])){
-
-                            item[3] = Integer.toString(Integer.parseInt(record[4])+Integer.parseInt(item[3]));
-                            break;
+                long daysDifference = currentDate.toEpochDay() - LocalDate.parse(record[5], DateTimeFormatter.ISO_LOCAL_DATE).toEpochDay();
+                if(daysDifference > 3){
+                    System.out.println("The date is more than 3 days old.");
+                    return;
+                }
+                else{
+                    if(itemList != null){
+                        for(String[] item: itemList){
+                            if(record[1].equals(item[0])){
+                                item[3] = Integer.toString(Integer.parseInt(record[4])+Integer.parseInt(item[3]));
+                                break;
+                            }
                         }
                     }
                 }
@@ -354,6 +393,16 @@ public class SalesRecordManagement {
                     idFound = true;
                     break;
                 }
+            }
+            LocalDate currentDate = LocalDate.now();
+            long daysDifference = currentDate.toEpochDay() - LocalDate.parse(sr.getDate(), DateTimeFormatter.ISO_LOCAL_DATE).toEpochDay();
+            if(daysDifference > 3){
+                System.out.println(System.lineSeparator().repeat(50));
+                System.out.println("The date is more than 3 days old.");
+                System.out.println("Press [Enter] to continue...");
+                Sc.nextLine();
+                System.out.println(System.lineSeparator().repeat(50));
+                continue;
             }
             
             if(!idFound){

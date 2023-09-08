@@ -332,7 +332,7 @@ public class PurchaseOrderManagement {
         
     }
     
-        private void updateIssuedPOStatus()
+    private void updateIssuedPOStatus()
     {
         while(true){
             ArrayList<String[]> poList = new ArrayList();
@@ -365,7 +365,7 @@ public class PurchaseOrderManagement {
             
             if(choiceUpdatePO.equals("Y"))
             {
-                saveIssuedPOtoFile(selectedPO);
+                addPurchasedItemtoDB(selectedPO);
                 System.out.println("Purchase Order status successfully updated.");
             }
             else if(choiceUpdatePO.equals("N")){
@@ -377,8 +377,34 @@ public class PurchaseOrderManagement {
         }
     }
         
-    private void addPurchasedItemtoDB()
+    private void addPurchasedItemtoDB(String[] selectedPO)
     {
+        InventoryDatabase invDB = new InventoryDatabase();
+        ArrayList<String[]> itemList = invDB.getAllData(InventoryDatabase.files.ITEM.getFile());
+        ArrayList<String[]> poList = invDB.getAllData(InventoryDatabase.files.PURCHASE_ORDER.getFile());
+        for(String[] item : itemList){
+            if(selectedPO[2].equals(item[0])){
+                item[3] = Integer.toString(Integer.parseInt(item[3]) + Integer.parseInt(selectedPO[7]));
+            }
+        }
+        for(String[] po:poList){
+            if(po[0].equals(selectedPO[0])){
+                po[10] = "Delivered";
+            }
+        }
+        
+        invDB.writeToTextFile(itemList.get(0), InventoryDatabase.files.ITEM.getFile());
+        for(int i = 1; i < itemList.size(); i++)
+        {
+            invDB.appendToTextFile(itemList.get(i), InventoryDatabase.files.ITEM.getFile());
+        }
+        
+        invDB.writeToTextFile(poList.get(0), InventoryDatabase.files.PURCHASE_ORDER.getFile());
+        for(int i = 1; i < poList.size(); i++)
+        {
+            invDB.appendToTextFile(poList.get(i), InventoryDatabase.files.PURCHASE_ORDER.getFile());
+        }
+        
         
     }
         
