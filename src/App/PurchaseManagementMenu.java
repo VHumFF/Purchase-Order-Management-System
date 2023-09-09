@@ -21,7 +21,6 @@ public class PurchaseManagementMenu {
             System.out.println(String.format("%-2s %-1s", "2.", "Display List of Supplier"));
             System.out.println(String.format("%-2s %-1s", "3.", "Display Requisition"));
             System.out.println(String.format("%-2s %-1s", "4.", "Generate Purchase Order"));
-            System.out.println(String.format("%-2s %-1s", "5.", "Display List of Purchaser Orders"));
             System.out.println(String.format("%-2s %-1s", "0.", "Exit"));
             System.out.print("Enter your choice:");
             
@@ -42,13 +41,13 @@ public class PurchaseManagementMenu {
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "3":
-                    System.out.println("You selected Display Requisition");
+                    System.out.println(System.lineSeparator().repeat(50));
+                    PurchaseRequisitionManagement prm = new PurchaseRequisitionManagement();
+                    String status = prm.selectPRStatus();
+                    prm.displayPRList(status);
                     break;
                 case "4":
                     appInstance.changePage(App.AppPage.PURCHASE_ORDER_MANAGEMENT.getPageClass());
-                    break;
-                case "5":
-                    System.out.println("You selected Display List of Purchaser Orders");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

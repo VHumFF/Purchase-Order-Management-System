@@ -10,7 +10,7 @@ import java.util.Scanner;
  *
  * @author verno
  */
-public class SalesManagementMenu {
+public class SalesManagementMenu extends PurchaseOrderManagement{
     public void OpenPage(){
         App appInstance = new App();
         Scanner Sc = new Scanner(System.in);
@@ -45,7 +45,7 @@ public class SalesManagementMenu {
                     appInstance.changePage(App.AppPage.PURCHASE_REQUISITION_MANAGEMENT.getPageClass());
                     break;
                 case "5":
-                    System.out.println("You selected Display Purchaser Orders");
+                    displayPOList("All");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

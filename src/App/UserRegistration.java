@@ -4,7 +4,7 @@ package App;
 import java.util.Scanner;
 
 
-public class UserRegistration {
+public class UserRegistration{
     
     public void OpenPage(){
         String username = null;

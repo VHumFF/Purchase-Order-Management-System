@@ -17,6 +17,7 @@ public class Login {
         
         
         while(true){
+            System.out.println("Welcome to SIGMA SDN BHD Purchase Order Management System ");
             System.out.println("========================= Login Page =========================");
             System.out.println("Enter you credential to login or enter [EXIT] to exit program");
             System.out.print("Enter Username:");
@@ -24,7 +25,7 @@ public class Login {
             
             if(username.toUpperCase().equals("EXIT")){
                 System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("Loging out System");
+                System.out.println("Thank You for Using.\nLoging out System");
                 System.exit(0);
             }
             
