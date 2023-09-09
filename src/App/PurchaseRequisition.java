@@ -13,12 +13,18 @@ public class PurchaseRequisition {
     private int prQuantity;
     private Item item;
     
+    public PurchaseRequisition(String prID){
+        this.prID = prID;
+    }
     
     public PurchaseRequisition(Item item, int prQuantity){
         this.item = item;
         this.prQuantity = prQuantity;
     }
     
+    public String getPRID(){
+        return prID;
+    }
     
     public Item getItem(){
         return item;

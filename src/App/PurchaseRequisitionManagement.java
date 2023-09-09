@@ -245,7 +245,7 @@ public class PurchaseRequisitionManagement {
     }
 
        
-    public void deletePR(){
+    private void deletePR(){
         Outer:
         while(true){
             Scanner Sc = new Scanner(System.in);
@@ -300,7 +300,7 @@ public class PurchaseRequisitionManagement {
         }
     }
     
-    public void deletePRfromFile(String prToDelete){
+    private void deletePRfromFile(String prToDelete){
         InventoryDatabase iDB = new InventoryDatabase();
         ArrayList<String[]> prList = iDB.getAllData(InventoryDatabase.files.PURCHASE_REQUISITION.getFile());
         ArrayList<String[]> newPRList = new ArrayList();
