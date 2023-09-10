@@ -14,8 +14,11 @@ public class UserRegistration{
         
         while(true){
             System.out.println("======== User Registration ========");
-            System.out.print(String.format("Enter Username:"));
+            System.out.print(String.format("Enter Username or enter [BACK] to exit:"));
             username = Sc.nextLine();
+            if(username.toUpperCase().equals("BACK")){
+                return;
+            }
             boolean usernValid = usernValidation(username);//validate username format
             if(!usernValid){
                 continue;

@@ -1,9 +1,13 @@
 PR007;IT005;Rice;30.2;Everyday Groceries;SP002;100;asd;2023-08-21;Completed
-PR008;IT009;Flour;16.99;Everyday Groceries;SP004;50;asd;2023-08-21;Pending
+PR008;IT009;Flour;16.99;Everyday Groceries;SP004;50;asd;2023-08-21;Rejected
 PR009;IT011;Salt;10.99;Everyday Groceries;SP005;30;asd;2023-08-21;Completed
-PR010;IT002;Berry;15.23;Fresh Produce;SP001;50;asd;2023-08-21;Pending
-PR011;IT013;Jueyun Chili;10.0;Fresh Produce;SP007;200;asd;2023-08-21;Rejected
+PR010;IT002;Berry;15.23;Fresh Produce;SP001;50;asd;2023-08-21;Approved
+PR011;IT013;Jueyun Chili;10.0;Fresh Produce;SP007;200;asd;2023-08-21;Approved
 PR012;IT014;Mondstadt Hash Brown;22.23;Fresh Produce;SP008;150;asd;2023-08-21;Rejected
 PR013;IT012;Shrimp Meat;19.99;Fresh Food;SP006;130;asd;2023-08-21;Pending
-PR014;IT008;Smoked Fowl;12.0;Fresh Food;SP004;70;asd;2023-08-21;Completed
-PR015;IT003;Matsutake;5.99;Fresh Produce;SP001;300;asd;2023-08-21;Completed
+PR014;IT008;Smoked Fowl;12.0;Fresh Food;SP004;70;asd;2023-08-21;Pending
+PR015;IT003;Matsutake;5.99;Fresh Produce;SP001;300;asd;2023-08-21;Pending
+PR018;IT015;cow milk;12.0;Everyday Groceries;SP001;1000;asd;2023-09-10;Pending
+PR020;IT011;Salt;10.99;Everyday Groceries;SP005;200;sales123;2023-09-10;Pending
+PR021;IT020;african apple;20.0;Fresh Food;SP008;200;hello123;2023-09-10;Completed
+PR022;IT020;african apple;20.0;Fresh Food;SP007;300;hello123;2023-09-10;Rejected

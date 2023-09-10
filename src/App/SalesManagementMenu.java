@@ -46,12 +46,17 @@ public class SalesManagementMenu extends PurchaseOrderManagement{
                     break;
                 case "5":
                     displayPOList("All");
+                    System.out.println("Press [Enter] to continue");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "0":
                     System.out.println("Exiting Sales Management Menu. Goodbye!");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
             }
         }

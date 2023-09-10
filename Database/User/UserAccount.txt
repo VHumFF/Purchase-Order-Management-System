@@ -1,7 +1,7 @@
-asd;asd;Admin
-vernon123;123123;Purchase
+admin123;admin123;Admin
+purchase123;purchase123;Purchase
 edwin123;ed123123@@;Purchase
-kevin;kevin123@#;Sales
-hello;hello123!;Admin
-moricoi;mori123@@asd;Admin
-Vernon123;Bermopm123@;Admin
+sales123;sales123;Sales
+hello123;hello123;Sales
+vernon123;vernon123;Admin
+kaiwen123;kaiwen123;Purchase

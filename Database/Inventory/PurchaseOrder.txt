@@ -1,3 +1,6 @@
 PO001;PR015;IT003;Matsutake;5.99;Fresh Produce;SP001;300;2023-08-21;asd;Pending
 PO002;PR009;IT011;Salt;10.99;Everyday Groceries;SP005;30;2023-08-21;asd;Pending
-PO003;PR007;IT005;Rice;30.2;Everyday Groceries;SP002;100;2023-08-23;asd;Pending
+PO003;PR007;IT005;Rice;30.2;Everyday Groceries;SP002;100;2023-08-23;asd;Issued
+PO004;PR013;IT012;Shrimp Meat;19.99;Fresh Food;SP006;130;2023-09-10;asd;Issued
+PO005;PR010;IT002;Berry;15.23;Fresh Produce;SP001;50;2023-09-10;asd;Delivered
+PO006;PR021;IT020;african apple;20.0;Fresh Food;SP008;200;2023-09-10;purchase123;Pending
