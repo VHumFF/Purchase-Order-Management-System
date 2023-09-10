@@ -59,6 +59,9 @@ public class ItemManagement {
                     category = selectItemCategory();
                     System.out.println(System.lineSeparator().repeat(50));
                     displayItemListByCategory(category);
+                    System.out.println("Press [Enter] to go back");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 default:
                     System.out.println(System.lineSeparator().repeat(50));
@@ -129,6 +132,11 @@ public class ItemManagement {
                 itemUnitPrice = Sc.nextFloat();
                 // Consume newline left-over
                 Sc.nextLine();
+                
+                if(itemUnitPrice <= 0){
+                    App.displayMessage("Price cannot be less than or equal to 0");
+                    continue;
+                }
             }
             catch(InputMismatchException ie){
                 // Clear invalid input left-over
@@ -143,11 +151,11 @@ public class ItemManagement {
             
             System.out.println("Please enter the supplier for the item (enter '-' if there is currently no supplier.)");
             System.out.print("Enter Supplier ID:");
-            itemSupplierID = Sc.nextLine();
+            itemSupplierID = Sc.nextLine().toUpperCase();
 
             
             // if user enter "-" means the item have no supplier
-            if(itemSupplierID != "-"){
+            if(!itemSupplierID.equals("-")){
                 boolean suppIDFound = false;
                 for(String [] i : supplierList){
                     if(i[0].equals(itemSupplierID)){
@@ -275,7 +283,7 @@ public class ItemManagement {
         ArrayList<String []> poList = invDB.getAllData(InventoryDatabase.files.PURCHASE_ORDER.getFile());
         for(String[] pr: prList){
             if(pr[1].equals(itemID)){
-                if(pr[10].equals("Pending") || pr[10].equals("Approved")){
+                if(pr[9].equals("Pending") || pr[9].equals("Approved")){
                     System.out.println(System.lineSeparator().repeat(50));
                     System.out.println("Item still have ongoing PR unable to delete Item.");
                     return;
@@ -365,7 +373,8 @@ public class ItemManagement {
         String[] item_supp = item.getItemSupplierID().strip().split("\\|");
         Outer:
         while(true){
-            System.out.println("=============================================Item List=============================================");
+            System.out.println(System.lineSeparator().repeat(50));
+            System.out.println("===============================================Item================================================");
             System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", "Item ID", "Item Name","Unit Price", "Stock Quantity", "Category", "Supplied By");
             System.out.println("===================================================================================================");
             System.out.printf("%-10s%-23s%-15s%-20s%-20s%s%n", item.getItemID(), item.getItemName(),
@@ -405,6 +414,12 @@ public class ItemManagement {
                         
                         // Consume newline left-over
                         Sc.nextLine();
+                        
+                        
+                        if(itemUnitPrice <= 0){
+                            App.displayMessage("Item price cannot be equal or less than 0.");
+                            break Outer;
+                        }
                         item.setItemUnitPrice(itemUnitPrice);
                         updateEditItem(item);
                         App.displayMessage("Item detail updated successfully");

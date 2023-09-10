@@ -45,15 +45,20 @@ public class PurchaseManagementMenu {
                     PurchaseRequisitionManagement prm = new PurchaseRequisitionManagement();
                     String status = prm.selectPRStatus();
                     prm.displayPRList(status);
+                    System.out.println("Press [Enter] to go back.");
+                    Sc.nextLine();
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "4":
                     appInstance.changePage(App.AppPage.PURCHASE_ORDER_MANAGEMENT.getPageClass());
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "0":
                     System.out.println("Exiting Purchase Management Menu. Goodbye!");
+                    System.out.println(System.lineSeparator().repeat(50));
                     break Outer;
             }
             

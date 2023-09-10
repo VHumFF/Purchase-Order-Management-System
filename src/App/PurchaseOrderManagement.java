@@ -49,7 +49,9 @@ public class PurchaseOrderManagement {
                     System.out.println(System.lineSeparator().repeat(50));
                     break;
                 case "6":
-                    displayPOList("Pending");
+                    displayPOList("All");
+                    System.out.println("Press [Enter] to continue");
+                    Sc.nextLine();
                     break;
                 default:
                     System.out.println(System.lineSeparator().repeat(50));
@@ -70,11 +72,16 @@ public class PurchaseOrderManagement {
         PurchaseRequisitionManagement prM = new PurchaseRequisitionManagement();
         
         Scanner sc = new Scanner(System.in);
+        Outer:
         while (true){
             ArrayList<String []> prlist = new ArrayList();
             prlist = prM.displayPRList("Pending");
-            System.out.print("Please select the Purchase Requisite ID:");
+            System.out.print("Please select the Purchase Requisite ID or enter [BACK] to exit:");
             String inputPRID = sc.nextLine().toUpperCase();
+            if(inputPRID.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break Outer;
+            }
             boolean IDFound = false;
             for (String[] pr:prlist) 
             {
@@ -85,25 +92,27 @@ public class PurchaseOrderManagement {
                 }
             }
             if (!IDFound){
-                System.out.println("Please enter a valid PR ID.");
+                App.displayMessage("Please enter a valid PR ID.");
                 continue;
             }
             String newstatus = "";
-            System.out.print("Do you want to approve the Purchase Requisite? (Y/N): ");
+            System.out.print("Do you want to approve the Purchase Requisite? (Y/N)");
             String ApprovalChoice = sc.nextLine().toUpperCase();
             if(ApprovalChoice.equals("Y"))
             {
                 newstatus = "Approved";
                 changePRStatus(inputPRID,newstatus);
+                App.displayMessage("PR have been approved.");
             }
             else if(ApprovalChoice.equals("N"))
             {
                 newstatus = "Rejected";
                 changePRStatus(inputPRID,newstatus);
+                App.displayMessage("PR have been rejected.");
             }
             else
             {
-                System.out.println("Please enter 'Y' or 'N'");
+                App.displayMessage("Please enter 'Y' or 'N'");
                 continue;
             }
         }
@@ -133,12 +142,15 @@ public class PurchaseOrderManagement {
         PurchaseRequisitionManagement prM = new PurchaseRequisitionManagement();
         
         Scanner sc = new Scanner(System.in);
-        
+        Outer:
         while (true){
             ArrayList<String []> prlist = new ArrayList();
             prlist = prM.displayPRList("Approved");
-            System.out.print("Please select the Purchase Requisite ID:");
+            System.out.print("Please select the Purchase Requisite ID or enter [BACK] to exit:");
             String inputPRID = sc.nextLine().toUpperCase();
+            if(inputPRID.equals("BACK")){
+                break Outer;
+            }
             boolean IDFound = false;
             String[] selectedPR = {};
             for (String[] pr:prlist) 
@@ -155,18 +167,19 @@ public class PurchaseOrderManagement {
                 App.displayMessage("Please enter a valid Purchase Requisite ID.");
                 continue;
             }
-            
-            System.out.println("===============================================================Item List===============================================================");
+            System.out.println(System.lineSeparator().repeat(50));
+            System.out.println("================================================================PR List================================================================");
             System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "PR ID", "Item ID","Item Name", "Unit Price", 
                     "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
             System.out.println("=======================================================================================================================================");
             System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", selectedPR[0], selectedPR[1], selectedPR[2], "RM"+ selectedPR[3], selectedPR[6], selectedPR[5], selectedPR[7], selectedPR[8], selectedPR[9]);   
             System.out.println("=======================================================================================================================================\n");
-            System.out.println("Do you want to create a Purchase Order according to this PR? (Y/N): ");
+            System.out.print("Do you want to create a Purchase Order according to this PR? (Y/N): ");
             String choiceCreatePO = sc.nextLine().toUpperCase();
             if(choiceCreatePO.equals("Y"))
             {
                 addPOtoFile(selectedPR);
+                App.displayMessage("Purchase Order has been created for the PR.");
             }
             else if(choiceCreatePO.equals("N")){
                 break;
@@ -198,8 +211,11 @@ public class PurchaseOrderManagement {
             ArrayList<String[]> poList = new ArrayList();
             Scanner Sc = new Scanner(System.in);
             poList = displayPOList("Pending");
-            System.out.println("Please enter Order ID to delete:");
+            System.out.print("Please enter Order ID to delete or enter [BACK] to exit:");
             String inputPOID = Sc.nextLine().toUpperCase();
+            if(inputPOID.equals("BACK")){
+                break;
+            }
             boolean IDFound = false;
             String[] selectedPO = {};
             for(String[] po:poList){
@@ -213,14 +229,15 @@ public class PurchaseOrderManagement {
                 App.displayMessage("Please enter a valid Purchase Order ID.");
                     continue;
             }
-            System.out.println("===============================================================Item List===============================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
+            System.out.println(System.lineSeparator().repeat(50));
+            System.out.println("==========================================================================PO List==========================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
                     "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
-            System.out.println("=======================================================================================================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
+            System.out.println("===========================================================================================================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
                     selectedPO[2], selectedPO[3],"RM"+ selectedPO[4], selectedPO[7], selectedPO[6], selectedPO[9], selectedPO[8], selectedPO[10]);
-            System.out.println("=======================================================================================================================================");
-            System.out.println("Do you want to delete this Purchase Order? (Y/N): ");
+            System.out.println("===========================================================================================================================================================");
+            System.out.print("Do you want to delete this Purchase Order? (Y/N): ");
             String choiceDeletePO = Sc.nextLine().toUpperCase();
             
             if(choiceDeletePO.equals("Y"))
@@ -270,8 +287,12 @@ public class PurchaseOrderManagement {
             ArrayList<String[]> poList = new ArrayList();
             Scanner Sc = new Scanner(System.in);
             poList = displayPOList("Pending");
-            System.out.println("Please enter Order ID to issue:");
+            System.out.print("Please enter Order ID to issue or enter [BACK] to exit:");
             String inputPOID = Sc.nextLine().toUpperCase();
+            if(inputPOID.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break;
+            }
             boolean IDFound = false;
             String[] selectedPO = {};
             for(String[] po:poList){
@@ -285,14 +306,15 @@ public class PurchaseOrderManagement {
                 App.displayMessage("Please enter a valid Purchase Order ID.");
                 continue;
             }
-            System.out.println("===============================================================Item List===============================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
+            System.out.println(System.lineSeparator().repeat(50));
+            System.out.println("==========================================================================PO List==========================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
                     "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
-            System.out.println("=======================================================================================================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
+            System.out.println("===========================================================================================================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
                     selectedPO[2], selectedPO[3],"RM"+ selectedPO[4], selectedPO[7], selectedPO[6], selectedPO[9], selectedPO[8], selectedPO[10]);
-            System.out.println("=======================================================================================================================================");
-            System.out.println("Do you want to issue this Purchase Order? (Y/N): ");
+            System.out.println("===========================================================================================================================================================");
+            System.out.print("Do you want to issue this Purchase Order? (Y/N): ");
             String choiceIssuePO = Sc.nextLine().toUpperCase();
             
             if(choiceIssuePO.equals("Y"))
@@ -337,8 +359,12 @@ public class PurchaseOrderManagement {
             ArrayList<String[]> poList = new ArrayList();
             Scanner Sc = new Scanner(System.in);
             poList = displayPOList("Issued");
-            System.out.println("Please enter Order ID to update status:");
+            System.out.print("Please enter Order ID to update status or enter [BACK] to exit:");
             String inputPOID = Sc.nextLine().toUpperCase();
+            if(inputPOID.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break;
+            }
             boolean IDFound = false;
             String[] selectedPO = {};
             for(String[] po:poList){
@@ -352,15 +378,16 @@ public class PurchaseOrderManagement {
                 App.displayMessage("Please enter a valid Purchase Order ID.");
                 continue;
             }
-            System.out.println("===============================================================Item List===============================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
+            System.out.println(System.lineSeparator().repeat(50));
+            System.out.println("==========================================================================PO List==========================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
                     "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
-            System.out.println("=======================================================================================================================================");
-            System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
+            System.out.println("===========================================================================================================================================================");
+            System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", selectedPO[0], selectedPO[1], 
                     selectedPO[2], selectedPO[3],"RM"+ selectedPO[4], selectedPO[7], selectedPO[6], selectedPO[9], selectedPO[8], selectedPO[10]);
-            System.out.println("=======================================================================================================================================");
-            System.out.println("Do you want to update this issued Purchase Order status? (Y/N): ");
-            String choiceUpdatePO = Sc.nextLine();
+            System.out.println("===========================================================================================================================================================");
+            System.out.print("Do you want to update this issued Purchase Order status? (Y/N): ");
+            String choiceUpdatePO = Sc.nextLine().toUpperCase();
             
             if(choiceUpdatePO.equals("Y"))
             {
@@ -411,27 +438,27 @@ public class PurchaseOrderManagement {
         InventoryDatabase iDB = new InventoryDatabase();
         ArrayList<String[]> poList = iDB.getAllData(InventoryDatabase.files.PURCHASE_ORDER.getFile());
         if(poList == null){
-            System.out.println("No PO found.");
+            App.displayMessage("No PO found.");
             return null;
         }
         ArrayList<String[]> statusPOList = new ArrayList();
         System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("===============================================================Item List===============================================================");
-        System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "PR ID", "Item ID","Item Name", "Unit Price", 
-                "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
-        System.out.println("=======================================================================================================================================");
+        System.out.println("==========================================================================PO List==========================================================================");
+        System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", "Order ID" ,"PRID","Item ID","Item Name", "Unit Price", 
+                            "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
+        System.out.println("===========================================================================================================================================================");
         for(String[] po : poList){
-            if(po[9].equals(status)){
-                System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", po[0], po[1], po[2], "RM"+ po[3], po[6], po[5], po[7], po[8], po[9]);
+            if(po[10].equals(status)){
+                System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", po[0], po[1], po[2], po[3],"RM"+ po[4], po[7], po[6], po[9], po[8], po[10]);
                 statusPOList.add(po);
             }
             else if(status.equals("All")){
-                System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", po[0], po[1], po[2], "RM"+ po[3], po[6], po[5], po[7], po[8], po[9]);                
+                System.out.printf("%-10s%-10s%-10s%-30s%-20s%-20s%-15s%-15s%-15s%s%n", po[0], po[1], po[2], po[3],"RM"+ po[4], po[7], po[6], po[9], po[8], po[10]);               
             }
                 
         }
         
-        System.out.println("=======================================================================================================================================\n");
+        System.out.println("===========================================================================================================================================================\n");
 
         if(status.equals("All")){
             return poList;

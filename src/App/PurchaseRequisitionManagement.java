@@ -73,8 +73,12 @@ public class PurchaseRequisitionManagement {
             Item it = new Item(null, null, 0, 0, null, null);
             String category = im.selectItemCategory();
             ArrayList<String[]> itemList = im.displayItemListByCategory(category);
-            System.out.print("Select The ItemID To Create Purchase Requisition:");
+            System.out.print("Select The ItemID To Create Purchase Requisition or enter [BACK] to exit:");
             String selectedItemID = Sc.nextLine().toUpperCase();
+            if(selectedItemID.equals("BACK")){
+                System.out.println(System.lineSeparator().repeat(50));
+                break;
+            }
 
             boolean IDFound = false;
             boolean suppidValid = true;
@@ -94,9 +98,9 @@ public class PurchaseRequisitionManagement {
                         break Outer;
                     }
                     ArrayList<String[]> supplierList = invDB.getAllData(InventoryDatabase.files.SUPPLIER.getFile());
-                    System.out.println("=============================================Item List=======");
+                    System.out.println("========================Supplier Lis========================");
                     System.out.printf("%-15s%-23s%s%n", "Supplier ID", "Supplier Name","Supplier Contact");
-                    System.out.println("=============================================================");
+                    System.out.println("============================================================");
                     
                     for(String isup:itemSupp){
                         for(String[] sup : supplierList){
@@ -107,10 +111,11 @@ public class PurchaseRequisitionManagement {
                     }
                     System.out.println("=============================================================");
                     boolean idFound2 = false;
-                    System.out.println("Please select a supplier:");
-                    String supid = Sc.nextLine();
+                    System.out.print("Please select a supplier:");
+                    String supid = Sc.nextLine().toUpperCase();
                     for(String isupp : itemSupp){
                         if(isupp.equals(supid)){
+                            it.setItemSupplier(isupp);
                             idFound2 = true;
                         }
                     }
@@ -270,7 +275,7 @@ public class PurchaseRequisitionManagement {
             
             while(true){
                 System.out.println(System.lineSeparator().repeat(50));
-                System.out.println("===============================================================Item List===============================================================");
+                System.out.println("================================================================PR List================================================================");
                 System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "PR ID", "Item ID","Item Name", "Unit Price", 
                         "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
                 System.out.println("=======================================================================================================================================");
@@ -326,7 +331,7 @@ public class PurchaseRequisitionManagement {
         while(true){
             Scanner Sc = new Scanner(System.in);
             System.out.println("Display PR by Status. Please select a PR status");
-            System.out.println(String.format("1. Pending\n2. Approved\n3.Rejected\n4.Completed\n5.All"));
+            System.out.println(String.format("1. Pending\n2. Approved\n3. Rejected\n4. Completed\n5. All"));
             System.out.print("Enter your choice:");
             String choice = Sc.nextLine();
             if(choice.equals("1")){
@@ -363,7 +368,7 @@ public class PurchaseRequisitionManagement {
         }
         ArrayList<String[]> statusPRList = new ArrayList();
         System.out.println(System.lineSeparator().repeat(50));
-        System.out.println("===============================================================Item List===============================================================");
+        System.out.println("===============================================================PR List=================================================================");
         System.out.printf("%-8s%-10s%-30s%-13s%-20s%-15s%-15s%-15s%s%n", "PR ID", "Item ID","Item Name", "Unit Price", 
                 "Purchase Quantity","Supplied By", "Created By", "Date", "Status");
         System.out.println("=======================================================================================================================================");

@@ -346,6 +346,10 @@ public class SalesRecordManagement {
                     break;
                 }
             }
+            if(!idFound){
+                App.displayMessage("Please enter a valid sales record ID");
+                continue;
+            }
             LocalDate currentDate = LocalDate.now();
             long daysDifference = currentDate.toEpochDay() - LocalDate.parse(sr.getDate(), DateTimeFormatter.ISO_LOCAL_DATE).toEpochDay();
             if(daysDifference > 3){
@@ -353,10 +357,7 @@ public class SalesRecordManagement {
                 continue;
             }
             
-            if(!idFound){
-                App.displayMessage("Please enter a valid sales record ID");
-                continue;
-            }
+            
             editQuantitySold(sr);
             
         }
